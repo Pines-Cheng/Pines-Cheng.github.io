@@ -7,3 +7,5 @@ http://username.github.io/pages
 http://username.github.io/rss.xml
 http://username.github.io/sitemap.txt
 http://username.github.io/tags
+
+http://username.github.io/2016/04/23/hello-world

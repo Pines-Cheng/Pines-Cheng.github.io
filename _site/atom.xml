@@ -4,13 +4,22 @@
  <title>不挑食的程序员</title>
  <link href="http://username.github.io/atom.xml" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2016-04-23T19:56:26+08:00</updated>
+ <updated>2016-04-23T20:04:11+08:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>Pines-Cheng</name>
    <email>Pines-Cheng</email>
  </author>
 
+ 
+ <entry>
+   <title>Hello World</title>
+   <link href="http://username.github.io/2016/04/23/hello-world"/>
+   <updated>2016-04-23T00:00:00+08:00</updated>
+   <id>http://username.github.io/2016/04/23/hello-world</id>
+   <content type="html">
+</content>
+ </entry>
  
  
 </feed>
