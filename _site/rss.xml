@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+        <title>不挑食的程序员</title>
+        <description>不挑食的程序员 - Pines-Cheng</description>
+        <link>http://username.github.io</link>
+        <atom:link href="http://username.github.io/rss.xml" rel="self" type="application/rss+xml" />
+        <lastBuildDate>Sat, 23 Apr 2016 19:56:26 +0800</lastBuildDate>
+        <pubDate>Sat, 23 Apr 2016 19:56:26 +0800</pubDate>
+        <ttl>60</ttl>
+
+
+
+</channel>
+</rss>

@@ -1,0 +1,9 @@
+
+http://username.github.io/archive
+http://username.github.io/atom.xml
+http://username.github.io/categories
+http://username.github.io/
+http://username.github.io/pages
+http://username.github.io/rss.xml
+http://username.github.io/sitemap.txt
+http://username.github.io/tags
