@@ -4,7 +4,7 @@
   <title><![CDATA[Pines Cheng's Blog]]></title>
   <link href="http://pines-cheng.github.io/atom.xml" rel="self"/>
   <link href="http://pines-cheng.github.io/"/>
-  <updated>2016-04-25T00:15:15+08:00</updated>
+  <updated>2016-04-25T02:05:37+08:00</updated>
   <id>http://pines-cheng.github.io/</id>
   <author>
     <name><![CDATA[Pines Cheng]]></name>
@@ -23,12 +23,19 @@
 <blockquote><p>一份<a href="https://github.com/gulpjs/gulp">gulp</a>的资源，插件和使用实例清单， 致力于打造更好的前端工程构建流程。</p></blockquote>
 
 <p>被老外的<a href="https://github.com/sindresorhus/awesome">awesome</a> 清单刺激到，觉得有必要翻译一份，为国产的程序员们做点事情，本清单将保持实时更新同步。
-PS:进都进来了，就顺便看看其他的吧:
-- <a href="https://github.com/Pines-Cheng/awesome-nodejs-cn">awesome-nodejs-cn</a>
-- <a href="https://github.com/Pines-Cheng/awesome-angularjs-cn">awesome-angularjs-cn</a>
-- <a href="https://github.com/Pines-Cheng/awesome-react-cn">awesome-react-cn</a>
-- <a href="https://github.com/Pines-Cheng/awesome-npm-cn">awesome-npm-cn</a>
-- <a href="https://github.com/Pines-Cheng/awesome-react-native-cn">awesome-react-native-cn</a></p>
+PS:进都进来了，就顺便看看其他的吧:</p>
+
+<ul>
+<li><a href="https://github.com/Pines-Cheng/awesome-nodejs-cn">awesome-nodejs-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-angularjs-cn">awesome-angularjs-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-react-cn">awesome-react-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-npm-cn">awesome-npm-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-react-native-cn">awesome-react-native-cn</a></li>
+</ul>
+
+
+<!--more-->
+
 
 <blockquote><p>项目的Github地址：<a href="https://github.com/Pines-Cheng/awesome-gulp-cn">awesome-react-cn</a>，持续更新中。。。欢迎<a href="https://github.com/Pines-Cheng/awesome-gulp-cn">start</a>。
 翻译得仓促，如有问题，请提<a href="https://github.com/Pines-Cheng/awesome-gulp-cn/issues">issues</a>

@@ -11,16 +11,17 @@ categories:
 
 被老外的[awesome](https://github.com/sindresorhus/awesome) 清单刺激到，觉得有必要翻译一份，为国产的程序员们做点事情，本清单将保持实时更新同步。
 PS:进都进来了，就顺便看看其他的吧:
+
 - [awesome-nodejs-cn](https://github.com/Pines-Cheng/awesome-nodejs-cn)
 - [awesome-angularjs-cn](https://github.com/Pines-Cheng/awesome-angularjs-cn)
 - [awesome-react-cn](https://github.com/Pines-Cheng/awesome-react-cn)
 - [awesome-npm-cn](https://github.com/Pines-Cheng/awesome-npm-cn)
 - [awesome-react-native-cn](https://github.com/Pines-Cheng/awesome-react-native-cn)
+<!--more-->
 
 >项目的Github地址：[awesome-react-cn](https://github.com/Pines-Cheng/awesome-gulp-cn)，持续更新中。。。欢迎[start](https://github.com/Pines-Cheng/awesome-gulp-cn)。
 >翻译得仓促，如有问题，请提[issues](https://github.com/Pines-Cheng/awesome-gulp-cn/issues)
 >如果想贡献，请[Pull Requests](https://github.com/Pines-Cheng/awesome-gulp-cn/pulls)。
-
 
 ## 资源
 ### 通用资源

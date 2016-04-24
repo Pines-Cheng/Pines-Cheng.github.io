@@ -4,7 +4,7 @@
 
 url: http://pines-cheng.github.io
 title: Pines Cheng's Blog
-subtitle: If you want to go fast, go alone. If you want to go far, bring others along.
+subtitle: "不挑食的程序员,充满危机感的斗士."
 author: Pines Cheng
 simple_search: https://www.google.com/search
 description:
@@ -91,7 +91,7 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name: GLGJing
+disqus_short_name: httppineschenggithubio
 disqus_show_comment_count: true
 
 # Google Analytics
