@@ -1,0 +1,39 @@
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">UPInt</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="n">UPInt</span><span class="p">()</span> <span class="o">:</span> <span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+
+  <span class="n">UPInt</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">++</span><span class="p">()</span> <span class="p">{</span>
+    <span class="o">*</span><span class="k">this</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">const</span> <span class="n">UPInt</span> <span class="k">operator</span><span class="o">++</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">UPInt</span> <span class="n">old</span> <span class="o">=</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="o">++</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">old</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">UPInt</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">+=</span><span class="p">(</span><span class="kt">int</span> <span class="n">rValue</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">value</span> <span class="o">+=</span> <span class="n">rValue</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">int</span> <span class="n">getValue</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="k">protected</span><span class="o">:</span>
+  <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">_tmain</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">_TCHAR</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+  <span class="n">UPInt</span> <span class="n">tmp</span><span class="p">;</span>
+  <span class="n">UPInt</span> <span class="n">a</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">++</span><span class="p">;</span> <span class="c1">// 调用 const UPInt operator++(int)</span>
+  <span class="n">UPInt</span> <span class="n">b</span> <span class="o">=</span> <span class="o">++</span><span class="n">tmp</span><span class="p">;</span> <span class="c1">// 调用 UPInt&amp; operator++()</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">getValue</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="p">.</span><span class="n">getValue</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>

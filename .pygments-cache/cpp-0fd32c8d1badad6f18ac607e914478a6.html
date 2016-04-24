@@ -1,0 +1,14 @@
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+  <span class="n">Foo</span><span class="o">*</span> <span class="n">pnext</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">foo_bar</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Foo</span> <span class="n">bar</span><span class="p">;</span>
+  <span class="c1">// 程序需要 bar&#39;s members 都被初始化为 0</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">bar</span><span class="p">.</span><span class="n">val</span> <span class="o">||</span> <span class="n">bar</span><span class="p">.</span><span class="n">pnext</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// do something</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>

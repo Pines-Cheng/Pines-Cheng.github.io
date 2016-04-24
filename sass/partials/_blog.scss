@@ -1,19 +1,25 @@
 article {
-  padding-top: 1em;
-  a { @extend .force-wrap; }
+  padding-top: 2.3em;
+  a { @extend .force-wrap;
+    &, &:visited, &:active, &:hover { text-decoration: none; }
+  }
   header {
     position: relative;
     padding-top: 2em;
     padding-bottom: 1em;
+    padding-left: 0;
+    padding-right: 0;
     margin-bottom: 1em;
     background: $img-border bottom left repeat-x;
     h1 {
       margin: 0;
+      font-weight: 400;
       a { text-decoration: none;
-        &:hover { text-decoration: underline; } }
+        @include link-colors($text-color, $visited: $text-color);
+        }
     }
     p {
-      font-size: .9em;
+      font-size: .8em;
       color: $text-color-light;
       margin: 0;
       &.meta {
@@ -23,13 +29,13 @@ article {
       }
     }
     @media only screen and (min-width: 768px) {
-      margin-bottom: 1.5em;
-      padding-bottom: 1em;
+      margin-bottom: 1em;
+      padding-bottom: .5em;
       background: $img-border bottom left repeat-x;
     }
   }
   h2 {
-    padding-top: 0.8em;
+    padding-top: 0.4em;
     background: $img-border top left repeat-x;
   }
   .entry-content & h2:first-child, header + h2 { padding-top: 0; }
@@ -89,16 +95,15 @@ article + article {
 }
 #content .blog-index {
   padding: { top: 0; bottom: 0; }
-  article { padding-top: 2em; }
   article header { background: none; padding-bottom: 0; }
   article h1 {
-    font-size: 2.2em;
+    font-size: 1.6em;
     a { color: inherit; &:hover { color: $link-color-hover; } }
   }
   a[rel=full-article] {
     background: darken($main-bg, 5);
     display: inline-block;
-    padding: .4em .8em;
+    padding: .4em .4em;
     margin-right: .5em;
     text-decoration: none;
     color: mix($text-color, $text-color-light);
@@ -118,7 +123,7 @@ article + article {
 
 .separator {
   content: "\2022 ";
-  padding: 0 .4em 0 .2em;
+  padding: 0 .2em 0 .2em;
   display: inline-block;
 }
 
@@ -126,8 +131,12 @@ article + article {
   text-align: center;
   font-size: .95em;
   position: relative;
-  background: $img-border top left repeat-x;
+  background: none repeat scroll 0 0 transparent;
+  margin-top: 4em;
+  margin-bottom: 0;
   padding: {top: 1.5em; bottom: 1.5em;}
+  border-top: dotted 1px #D1D1D1;
+  border-bottom: dotted 1px #D1D1D1;
   a {
     text-decoration: none;
     color: $text-color-light;

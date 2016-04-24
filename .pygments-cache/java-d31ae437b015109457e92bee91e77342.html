@@ -1,0 +1,19 @@
+<div class="highlight"><pre><span class="n">RemoteViews</span> <span class="n">bigView</span><span class="o">;</span>
+<span class="n">RemoteViews</span> <span class="n">smallView</span><span class="o">;</span>
+
+<span class="c1">// 构建 bigView 和 smallView。</span>
+<span class="o">...</span>
+
+<span class="n">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+
+<span class="c1">// 设置自定义 RemoteViews</span>
+<span class="n">builder</span><span class="o">.</span><span class="na">setContent</span><span class="o">(</span><span class="n">smallView</span><span class="o">).</span><span class="na">setSmallIcon</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">icon_notification</span><span class="o">);</span>
+<span class="n">Notification</span> <span class="n">notification</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+<span class="c1">// 如果系统版本 &gt;= Android 4.1，设置大视图 RemoteViews</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">Build</span><span class="o">.</span><span class="na">VERSION</span><span class="o">.</span><span class="na">SDK_INT</span> <span class="o">&gt;=</span> <span class="n">Build</span><span class="o">.</span><span class="na">VERSION_CODES</span><span class="o">.</span><span class="na">JELLY_BEAN</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">notification</span><span class="o">.</span><span class="na">bigContentView</span> <span class="o">=</span> <span class="n">bigView</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="n">NotificationManager</span> <span class="n">notificationManager</span> <span class="o">=</span> <span class="o">(</span><span class="n">NotificationManager</span><span class="o">)</span> <span class="n">context</span><span class="o">.</span><span class="na">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">NOTIFICATION_SERVICE</span><span class="o">);</span>
+<span class="n">notificationManager</span><span class="o">.</span><span class="na">notify</span><span class="o">(</span><span class="n">DAILY_PUSH_NOTIFICATION_ID</span><span class="o">,</span> <span class="n">notification</span><span class="o">);</span>
+</pre></div>

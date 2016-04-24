@@ -1,0 +1,37 @@
+<div class="highlight"><pre><span class="kd">public</span> <span class="kt">int</span> <span class="nf">checkAddPermission</span><span class="o">(</span><span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">type</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="na">type</span><span class="o">;</span>
+    
+    <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">&lt;</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FIRST_SYSTEM_WINDOW</span>
+            <span class="o">||</span> <span class="n">type</span> <span class="o">&gt;</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">LAST_SYSTEM_WINDOW</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">WindowManagerImpl</span><span class="o">.</span><span class="na">ADD_OKAY</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">String</span> <span class="n">permission</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">switch</span> <span class="o">(</span><span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="nl">TYPE_TOAST:</span>
+            <span class="c1">// XXX right now the app process has complete control over</span>
+            <span class="c1">// this...  should introduce a token to let the system</span>
+            <span class="c1">// monitor/control what they are doing.</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="k">case</span> <span class="nl">TYPE_INPUT_METHOD:</span>
+        <span class="k">case</span> <span class="nl">TYPE_WALLPAPER:</span>
+            <span class="c1">// The window manager will check these.</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="k">case</span> <span class="nl">TYPE_PHONE:</span>
+        <span class="k">case</span> <span class="nl">TYPE_PRIORITY_PHONE:</span>
+        <span class="k">case</span> <span class="nl">TYPE_SYSTEM_ALERT:</span>
+        <span class="k">case</span> <span class="nl">TYPE_SYSTEM_ERROR:</span>
+        <span class="k">case</span> <span class="nl">TYPE_SYSTEM_OVERLAY:</span>
+            <span class="n">permission</span> <span class="o">=</span> <span class="n">android</span><span class="o">.</span><span class="na">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">SYSTEM_ALERT_WINDOW</span><span class="o">;</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="k">default</span><span class="o">:</span>
+            <span class="n">permission</span> <span class="o">=</span> <span class="n">android</span><span class="o">.</span><span class="na">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">INTERNAL_SYSTEM_WINDOW</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">permission</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">mContext</span><span class="o">.</span><span class="na">checkCallingOrSelfPermission</span><span class="o">(</span><span class="n">permission</span><span class="o">)</span>
+                <span class="o">!=</span> <span class="n">PackageManager</span><span class="o">.</span><span class="na">PERMISSION_GRANTED</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">WindowManagerImpl</span><span class="o">.</span><span class="na">ADD_PERMISSION_DENIED</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">WindowManagerImpl</span><span class="o">.</span><span class="na">ADD_OKAY</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>

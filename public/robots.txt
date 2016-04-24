@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: 
+Disallow:
 
-Sitemap: http://pines-cheng.github.io/sitemap.xml 
+Sitemap: http://glgjing.github.io/sitemap.xml

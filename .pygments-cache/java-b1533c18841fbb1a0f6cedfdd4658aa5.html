@@ -1,0 +1,9 @@
+<div class="highlight"><pre><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>  
+    <span class="kd">final</span> <span class="n">Window</span> <span class="n">win</span> <span class="o">=</span> <span class="n">getWindow</span><span class="o">();</span>  
+    <span class="n">win</span><span class="o">.</span><span class="na">addFlags</span><span class="o">(</span><span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_SHOW_WHEN_LOCKED</span>  
+            <span class="o">|</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_DISMISS_KEYGUARD</span>  
+            <span class="o">|</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_KEEP_SCREEN_ON</span>  
+            <span class="o">|</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_TURN_SCREEN_ON</span><span class="o">);</span>  
+<span class="o">}</span>
+</pre></div>

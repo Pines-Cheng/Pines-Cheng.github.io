@@ -1,0 +1,63 @@
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WidgetService</span> <span class="kd">extends</span> <span class="n">Service</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">ALARM_DURATION</span>  <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">;</span> <span class="c1">// service 自启间隔</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">UPDATE_DURATION</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">;</span>     <span class="c1">// Widget 更新间隔</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">UPDATE_MESSAGE</span>  <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="n">UpdateHandler</span> <span class="n">updateHandler</span><span class="o">;</span> <span class="c1">// 更新 Widget 的 Handler</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">IBinder</span> <span class="nf">onBind</span><span class="o">(</span><span class="n">Intent</span> <span class="n">intent</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">onStartCommand</span><span class="o">(</span><span class="n">Intent</span> <span class="n">intent</span><span class="o">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="o">,</span> <span class="kt">int</span> <span class="n">startId</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// 每个 ALARM_DURATION 自启一次</span>
+    <span class="n">AlarmManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="o">(</span><span class="n">AlarmManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">ALARM_SERVICE</span><span class="o">);</span>
+    <span class="n">Intent</span> <span class="n">alarmIntent</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="n">WidgetService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">PendingIntent</span> <span class="n">pendingIntent</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">getService</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="mi">0</span><span class="o">,</span>
+      <span class="n">alarmIntent</span><span class="o">,</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">FLAG_UPDATE_CURRENT</span><span class="o">);</span>
+
+    <span class="n">manager</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">AlarmManager</span><span class="o">.</span><span class="na">ELAPSED_REALTIME_WAKEUP</span><span class="o">,</span>
+      <span class="n">SystemClock</span><span class="o">.</span><span class="na">elapsedRealtime</span><span class="o">()</span> <span class="o">+</span> <span class="n">ALARM_DURATION</span><span class="o">,</span> <span class="n">pendingIntent</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">START_STICKY</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+
+    <span class="n">Message</span> <span class="n">message</span> <span class="o">=</span> <span class="n">updateHandler</span><span class="o">.</span><span class="na">obtainMessage</span><span class="o">();</span>
+    <span class="n">message</span><span class="o">.</span><span class="na">what</span> <span class="o">=</span> <span class="n">UPDATE_MESSAGE</span><span class="o">;</span>
+    <span class="n">updateHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">UpdateHandler</span><span class="o">();</span>
+    <span class="n">updateHandler</span><span class="o">.</span><span class="na">sendMessageDelayed</span><span class="o">(</span><span class="n">message</span><span class="o">,</span> <span class="n">UPDATE_DURATION</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">updateWidget</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// 更新 Widget</span>
+    <span class="n">RemoteViews</span> <span class="n">remoteViews</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">RemoteViews</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">().</span><span class="na">getPackageName</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">widget</span><span class="o">);</span>
+    <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span> <span class="o">=</span> <span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+    <span class="n">appWidgetManager</span><span class="o">.</span><span class="na">updateAppWidget</span><span class="o">(</span><span class="k">new</span> <span class="nf">ComponentName</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">MyWidgetProvider</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="n">remoteViews</span><span class="o">);</span>
+
+    <span class="c1">// 发送下次更新的消息</span>
+    <span class="n">Message</span> <span class="n">message</span> <span class="o">=</span> <span class="n">updateHandler</span><span class="o">.</span><span class="na">obtainMessage</span><span class="o">();</span>
+    <span class="n">message</span><span class="o">.</span><span class="na">what</span> <span class="o">=</span> <span class="n">UPDATE_MESSAGE</span><span class="o">;</span>
+    <span class="n">updateHandler</span><span class="o">.</span><span class="na">sendMessageDelayed</span><span class="o">(</span><span class="n">message</span><span class="o">,</span> <span class="n">UPDATE_DURATION</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">protected</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">UpdateHandler</span> <span class="kd">extends</span> <span class="n">Handler</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleMessage</span><span class="o">(</span><span class="n">Message</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">switch</span> <span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">what</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="nl">UPDATE_MESSAGE:</span>
+          <span class="n">updateWidget</span><span class="o">();</span>
+          <span class="k">break</span><span class="o">;</span>
+        <span class="k">default</span><span class="o">:</span>
+          <span class="k">break</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>

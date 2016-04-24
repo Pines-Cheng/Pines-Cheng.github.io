@@ -1,0 +1,25 @@
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyWidgetProvider</span> <span class="kd">extends</span> <span class="n">AppWidgetProvider</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">UPDATE_DURATION</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">;</span> <span class="c1">// Widget 更新间隔</span>
+
+  <span class="kd">private</span> <span class="n">PendingIntent</span> <span class="n">pendingIntent</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> 
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpdate</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">appWidgetIds</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">AlarmManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="o">(</span><span class="n">AlarmManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">ALARM_SERVICE</span><span class="o">);</span>
+    <span class="n">Intent</span> <span class="n">alarmIntent</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="n">WidgetService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">pendingIntent</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">pendingIntent</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">getService</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="mi">0</span><span class="o">,</span>
+        <span class="n">alarmIntent</span><span class="o">,</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">FLAG_UPDATE_CURRENT</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="n">manager</span><span class="o">.</span><span class="na">setRepeating</span><span class="o">(</span><span class="n">AlarmManager</span><span class="o">.</span><span class="na">ELAPSED_REALTIME_WAKEUP</span><span class="o">,</span>
+      <span class="n">SystemClock</span><span class="o">.</span><span class="na">elapsedRealtime</span><span class="o">(),</span> <span class="n">UPDATE_DURATION</span><span class="o">,</span> <span class="n">pendingIntent</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>  
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onDisabled</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">AlarmManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="o">(</span><span class="n">AlarmManager</span><span class="o">)</span> <span class="n">context</span><span class="o">.</span><span class="na">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">ALARM_SERVICE</span><span class="o">);</span>  
+    <span class="n">manager</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="n">pendingIntent</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>

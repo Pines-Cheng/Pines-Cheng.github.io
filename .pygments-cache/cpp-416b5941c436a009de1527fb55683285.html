@@ -1,0 +1,13 @@
+<div class="highlight"><pre><span class="c1">// C++ 伪码</span>
+<span class="n">Word</span><span class="o">::</span><span class="n">Word</span> <span class="p">{</span>
+  <span class="c1">// 调用 &lt;em&gt;name 的默认构造函数</span>
+  <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">name</span><span class="p">.</span><span class="n">String</span><span class="o">::</span><span class="n">String</span><span class="p">();</span>
+  <span class="c1">// 生成临时对象</span>
+  <span class="n">String</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="c1">// 将临时对象 memberwise 拷贝给 &lt;em&gt;name</span>
+  <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">name</span><span class="p">.</span><span class="n">String</span><span class="o">::</span><span class="n">Operator</span><span class="o">=</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>
+  <span class="c1">// 销毁临时对象</span>
+  <span class="n">temp</span><span class="p">.</span><span class="n">String</span><span class="o">::~</span><span class="n">String</span><span class="p">();</span>
+  <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>

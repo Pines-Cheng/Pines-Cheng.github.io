@@ -1,0 +1,17 @@
+<div class="highlight"><pre><span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="n">getIntent</span><span class="o">();</span>
+<span class="n">Bundle</span> <span class="n">extras</span> <span class="o">=</span> <span class="n">intent</span><span class="o">.</span><span class="na">getExtras</span><span class="o">();</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">extras</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">mAppWidgetId</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span>
+        <span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">EXTRA_APPWIDGET_ID</span><span class="o">,</span> 
+        <span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">INVALID_APPWIDGET_ID</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span> <span class="o">=</span> <span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+<span class="n">RemoteViews</span> <span class="n">views</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">RemoteViews</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getPackageName</span><span class="o">(),</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">example_appwidget</span><span class="o">);</span>
+<span class="n">appWidgetManager</span><span class="o">.</span><span class="na">updateAppWidget</span><span class="o">(</span><span class="n">mAppWidgetId</span><span class="o">,</span> <span class="n">views</span><span class="o">);</span>
+
+<span class="n">Intent</span> <span class="n">resultValue</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">();</span>
+<span class="n">resultValue</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">EXTRA_APPWIDGET_ID</span><span class="o">,</span> <span class="n">mAppWidgetId</span><span class="o">);</span>
+<span class="n">setResult</span><span class="o">(</span><span class="n">RESULT_OK</span><span class="o">,</span> <span class="n">resultValue</span><span class="o">);</span>
+<span class="n">finish</span><span class="o">();</span>
+</pre></div>

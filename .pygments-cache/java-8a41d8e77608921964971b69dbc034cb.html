@@ -1,0 +1,8 @@
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyWidgetProvider</span> <span class="kd">extends</span> <span class="n">AppWidgetProvider</span> <span class="o">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpdate</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">appWidgetIds</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">context</span><span class="o">.</span><span class="na">startService</span><span class="o">(</span><span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">WidgetService</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>

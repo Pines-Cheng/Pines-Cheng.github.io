@@ -9,7 +9,8 @@ single: true
   <footer>
     <p class="meta">
       {% include post/author.html %}
-      {% include post/date.html %}{{ time }}{% if updated %} {{ updated }}{% endif %}
+      {% include post/date.html %}{% if updated %}{{ updated }} (last update){% else %}{{ time }}{% endif %}
+      {% if site.history %}{% include post/history.html %}{% endif %}
       {% include post/categories.html %}
     </p>
     {% unless page.sharing == false %}
@@ -31,13 +32,10 @@ single: true
     <div id="disqus_thread" aria-live="polite">{% include post/disqus_thread.html %}</div>
   </section>
 {% endif %}
+{% if site.juvia_site_key and page.comments == true %}
+  <section>
+    <h1>Comments</h1>
+    <div id="juvia_thread" aria-live="polite">{% include post/juvia_thread.html %}</div>
+  </section>
+{% endif %}
 </div>
-{% unless page.sidebar == false %}
-<aside class="sidebar">
-  {% if site.post_asides.size %}
-    {% include_array post_asides %}
-  {% else %}
-    {% include_array default_asides %}
-  {% endif %}
-</aside>
-{% endunless %}

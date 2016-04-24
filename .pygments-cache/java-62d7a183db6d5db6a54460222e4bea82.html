@@ -1,0 +1,24 @@
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExampleAppWidgetProvider</span> <span class="kd">extends</span> <span class="n">AppWidgetProvider</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpdate</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">appWidgetIds</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="kt">int</span> <span class="n">N</span> <span class="o">=</span> <span class="n">appWidgetIds</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+
+        <span class="c1">// Perform this loop procedure for each App Widget that belongs to this provider</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">appWidgetId</span> <span class="o">=</span> <span class="n">appWidgetIds</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+
+            <span class="c1">// Create an Intent to launch ExampleActivity</span>
+            <span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">ExampleActivity</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">PendingIntent</span> <span class="n">pendingIntent</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">getActivity</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">intent</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+
+            <span class="c1">// Get the layout for the App Widget and attach an on-click listener</span>
+            <span class="c1">// to the button</span>
+            <span class="n">RemoteViews</span> <span class="n">views</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">RemoteViews</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getPackageName</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">appwidget_provider_layout</span><span class="o">);</span>
+            <span class="n">views</span><span class="o">.</span><span class="na">setOnClickPendingIntent</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">button</span><span class="o">,</span> <span class="n">pendingIntent</span><span class="o">);</span>
+
+            <span class="c1">// Tell the AppWidgetManager to perform an update on the current app widget</span>
+            <span class="n">appWidgetManager</span><span class="o">.</span><span class="na">updateAppWidget</span><span class="o">(</span><span class="n">appWidgetId</span><span class="o">,</span> <span class="n">views</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>

@@ -1,0 +1,14 @@
+<div class="highlight"><pre><span class="n">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="n">context</span><span class="o">)</span>
+
+<span class="n">builder</span><span class="o">.</span><span class="na">setSmallIcon</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">notification_icon</span><span class="o">)</span>
+<span class="n">builder</span><span class="o">.</span><span class="na">setContentTitle</span><span class="o">(</span><span class="s">&quot;My notification&quot;</span><span class="o">)</span>
+<span class="n">builder</span><span class="o">.</span><span class="na">setContentText</span><span class="o">(</span><span class="s">&quot;Hello World!&quot;</span><span class="o">);</span>
+<span class="c1">// 设置通知的优先级</span>
+<span class="n">builder</span><span class="o">.</span><span class="na">setPriority</span><span class="o">(</span><span class="n">NotificationCompat</span><span class="o">.</span><span class="na">PRIORITY_MAX</span><span class="o">);</span>
+<span class="n">Uri</span> <span class="n">alarmSound</span> <span class="o">=</span> <span class="n">RingtoneManager</span><span class="o">.</span><span class="na">getDefaultUri</span><span class="o">(</span><span class="n">RingtoneManager</span><span class="o">.</span><span class="na">TYPE_NOTIFICATION</span><span class="o">);</span>
+<span class="c1">// 设置通知的提示音</span>
+<span class="n">builder</span><span class="o">.</span><span class="na">setSound</span><span class="o">(</span><span class="n">alarmSound</span><span class="o">);</span>
+
+<span class="n">NotificationManager</span> <span class="n">notificationManager</span> <span class="o">=</span> <span class="o">(</span><span class="n">NotificationManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">NOTIFICATION_SERVICE</span><span class="o">);</span>
+<span class="n">notificationManager</span><span class="o">.</span><span class="na">notify</span><span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">());</span>
+</pre></div>

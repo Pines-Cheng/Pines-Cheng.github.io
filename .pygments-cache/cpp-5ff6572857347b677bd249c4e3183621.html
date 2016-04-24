@@ -1,0 +1,74 @@
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">B</span> <span class="o">:</span> <span class="k">public</span> <span class="n">A</span> <span class="p">{</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">C</span> <span class="p">{</span>
+ <span class="k">public</span><span class="o">:</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func1</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;class C: func 1&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">virtual</span> <span class="n">A</span><span class="o">*</span> <span class="n">Func2</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;class C: func 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">A</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// ERROR:静态函数不能被声明为virtual，也就没办法被重写。</span>
+  <span class="c1">// static virtual void FuncStatic() {}</span>
+
+  <span class="c1">//由于Func3被声明为private，所以需要通过public函数来调用</span>
+  <span class="kt">void</span> <span class="n">ShowFunc3</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Func3</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func4</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;class C: func 4&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func3</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;class C: func 3&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">D</span> <span class="o">:</span> <span class="k">public</span> <span class="n">C</span> <span class="p">{</span>
+ <span class="k">public</span><span class="o">:</span>
+  <span class="c1">// OK: 重写C类Func1，可以不带virtual关键字</span>
+  <span class="kt">void</span> <span class="n">Func1</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;class D: func 1&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// OK: 当返回值为指针或者引用时，返回值可以是父类返回值类型的子类</span>
+  <span class="k">virtual</span> <span class="n">B</span><span class="o">*</span> <span class="n">Func2</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;class D: func 2&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">B</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// ERROR: 除上面的情况，返回值类型要和父类一直</span>
+  <span class="cm">/*virtual bool Func2() {</span>
+<span class="cm">  }*/</span>
+
+  <span class="c1">// OK: 重写的函数的访问修饰符可以不同于被重写的函数</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func3</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;class D: func 3&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+
+ <span class="k">private</span><span class="o">:</span>
+  <span class="c1">// OK: 重写的函数的访问修饰符可以不同于被重写的函数</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func4</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;class D: func 4&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">_tmain</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">_TCHAR</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+  <span class="n">C</span><span class="o">*</span> <span class="n">c</span> <span class="o">=</span> <span class="k">new</span> <span class="n">D</span><span class="p">;</span>
+  <span class="n">c</span><span class="o">-&gt;</span><span class="n">Func1</span><span class="p">();</span>
+  <span class="n">c</span><span class="o">-&gt;</span><span class="n">Func2</span><span class="p">();</span>
+  <span class="n">c</span><span class="o">-&gt;</span><span class="n">ShowFunc3</span><span class="p">();</span>
+  <span class="n">c</span><span class="o">-&gt;</span><span class="n">Func4</span><span class="p">();</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>

@@ -1,0 +1,13 @@
+<div class="highlight"><pre><span class="n">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="n">context</span><span class="o">)</span>
+
+<span class="n">builder</span><span class="o">.</span><span class="na">setSmallIcon</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">notification_icon</span><span class="o">)</span>
+<span class="n">builder</span><span class="o">.</span><span class="na">setContentTitle</span><span class="o">(</span><span class="s">&quot;My notification&quot;</span><span class="o">)</span>
+<span class="n">builder</span><span class="o">.</span><span class="na">setContentText</span><span class="o">(</span><span class="s">&quot;Hello World!&quot;</span><span class="o">);</span>
+
+<span class="n">NotificationCompat</span><span class="o">.</span><span class="na">InboxStyle</span> <span class="n">inboxStyle</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NotificationCompat</span><span class="o">.</span><span class="na">InboxStyle</span><span class="o">();</span>
+<span class="n">inboxStyle</span><span class="o">.</span><span class="na">setBigContentTitle</span><span class="o">(</span><span class="s">&quot;邮件标题：&quot;</span><span class="o">);</span>
+<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="n">inboxStyle</span><span class="o">.</span><span class="na">addLine</span><span class="o">(</span><span class="s">&quot;邮件内容&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="n">builder</span><span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="n">inBoxStyle</span><span class="o">);</span>
+</pre></div>
