@@ -1,16 +1,366 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[GLGJing's Blog]]></title>
-  <link href="http://glgjing.github.io/atom.xml" rel="self"/>
-  <link href="http://glgjing.github.io/"/>
-  <updated>2016-04-24T23:39:47+08:00</updated>
-  <id>http://glgjing.github.io/</id>
+  <title><![CDATA[Pines Cheng's Blog]]></title>
+  <link href="http://pines-cheng.github.io/atom.xml" rel="self"/>
+  <link href="http://pines-cheng.github.io/"/>
+  <updated>2016-04-25T00:15:15+08:00</updated>
+  <id>http://pines-cheng.github.io/</id>
   <author>
-    <name><![CDATA[GLGJing]]></name>
-    <email><![CDATA[GLGJing@gmail.com]]></email>
+    <name><![CDATA[Pines Cheng]]></name>
+    <email><![CDATA[spider.cs.nuc@gmail.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Gulp资料大全:入门、插件、脚手架、包清单]]></title>
+    <link href="http://pines-cheng.github.io/blog/2016/04/25/gulpzi-liao-da-quan-ru-men-,-cha-jian-,-jiao-shou-jia-,-bao-qing-dan/"/>
+    <updated>2016-04-25T00:04:08+08:00</updated>
+    <id>http://pines-cheng.github.io/blog/2016/04/25/gulpzi-liao-da-quan-ru-men-,-cha-jian-,-jiao-shou-jia-,-bao-qing-dan</id>
+    <content type="html"><![CDATA[<h1><a href="https://github.com/alferov/awesome-gulp">awesome-gulp</a>中文版</h1>
+
+<blockquote><p>一份<a href="https://github.com/gulpjs/gulp">gulp</a>的资源，插件和使用实例清单， 致力于打造更好的前端工程构建流程。</p></blockquote>
+
+<p>被老外的<a href="https://github.com/sindresorhus/awesome">awesome</a> 清单刺激到，觉得有必要翻译一份，为国产的程序员们做点事情，本清单将保持实时更新同步。
+PS:进都进来了，就顺便看看其他的吧:
+- <a href="https://github.com/Pines-Cheng/awesome-nodejs-cn">awesome-nodejs-cn</a>
+- <a href="https://github.com/Pines-Cheng/awesome-angularjs-cn">awesome-angularjs-cn</a>
+- <a href="https://github.com/Pines-Cheng/awesome-react-cn">awesome-react-cn</a>
+- <a href="https://github.com/Pines-Cheng/awesome-npm-cn">awesome-npm-cn</a>
+- <a href="https://github.com/Pines-Cheng/awesome-react-native-cn">awesome-react-native-cn</a></p>
+
+<blockquote><p>项目的Github地址：<a href="https://github.com/Pines-Cheng/awesome-gulp-cn">awesome-react-cn</a>，持续更新中。。。欢迎<a href="https://github.com/Pines-Cheng/awesome-gulp-cn">start</a>。
+翻译得仓促，如有问题，请提<a href="https://github.com/Pines-Cheng/awesome-gulp-cn/issues">issues</a>
+如果想贡献，请<a href="https://github.com/Pines-Cheng/awesome-gulp-cn/pulls">Pull Requests</a>。</p></blockquote>
+
+<h2>资源</h2>
+
+<h3>通用资源</h3>
+
+<ul>
+<li><a href="http://gulpjs.com/">官网</a></li>
+<li><a href="https://github.com/gulpjs/gulp">Github库</a></li>
+<li><a href="http://gulpjs.com/plugins/">插件注册</a></li>
+<li><a href="https://www.npmjs.com/package/gulp">NPM模块</a></li>
+<li><a href="https://github.com/gulpjs/plugins/blob/master/src/blackList.json">插件黑名单</a></li>
+</ul>
+
+
+<h3>官方文档</h3>
+
+<ul>
+<li><a href="https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md">快速开始</a></li>
+<li><a href="https://github.com/gulpjs/gulp/blob/master/docs/API.md">API文档</a></li>
+<li><a href="https://github.com/gulpjs/gulp/tree/master/docs#articles">CLI 文档</a></li>
+<li><a href="https://github.com/gulpjs/gulp/blob/master/docs/writing-a-plugin/README.md">开始写一个插件</a></li>
+<li><a href="https://github.com/gulpjs/gulp/tree/master/docs/recipes">使用诀窍</a></li>
+</ul>
+
+
+<h3>组织</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/tagged/gulp">StackOverflow</a></li>
+<li><a href="https://twitter.com/gulpjs">Twitter</a></li>
+</ul>
+
+
+<h3>入门教程</h3>
+
+<h4>Gulp入门</h4>
+
+<ul>
+<li><a href="https://www.smashingmagazine.com/2014/06/building-with-gulp/">使用Gulp构建前端工程</a></li>
+<li><a href="https://scotch.io/tutorials/automate-your-tasks-easily-with-gulp-js">通过Gulp.js轻松自动化构建你的前端工程</a></li>
+<li><a href="https://medium.com/@contrahacks/gulp-3828e8126466">Gulp，让前端工程可视化</a></li>
+<li><a href="http://stefanimhoff.de/tag/gulp/">Gulp.js是什么？</a></li>
+<li><a href="http://blog.johnnyreilly.com/2015/02/using-gulp-in-asp-net-instead-of-web-optimization.html">使用Gulp在你的HTML中直接插入Scripts和Styles标签</a></li>
+<li><a href="http://denbuzze.com/post/5-lessons-learned-using-gulpjs/">5节课学会使用Gulp.js</a></li>
+<li><a href="http://lab.brightnorth.co.uk/2014/08/13/automating-linkage-how-i-learned-to-stop-worrying-and-love-the-build/">我是怎样摆脱前端工程的困扰的？</a></li>
+<li><a href="https://www.codementor.io/development-process/tutorial/how-to-set-up-gulp-beginner-guide#/">第一次开始Gulp Task</a></li>
+<li><a href="http://blog.overzealous.com/post/74121048393/why-you-shouldnt-create-a-gulp-plugin-or-how-to">为什么你不自己写一个Gulp插件？</a></li>
+<li><a href="http://blog.rangle.io/angular-gulp-bestpractices/">6个最好的从根本改善你的开发经验的Gulp实战练习</a></li>
+<li><a href="https://css-tricks.com/gulp-for-beginners/">Gulp初学者教程</a></li>
+</ul>
+
+
+<h4>Gulp 4 入门</h4>
+
+<ul>
+<li><a href="https://blog.wearewizards.io/migrating-to-gulp-4-by-example">迁移到Gulp 4的例子</a></li>
+<li><a href="http://fettblog.eu/gulp-4-parallel-and-series/">Gulp 4: 新的task执行系统 - gulp.parallel 和 gulp.series</a></li>
+</ul>
+
+
+<h4>Gulp with Browserify</h4>
+
+<ul>
+<li><a href="https://medium.com/@sogko/gulp-browserify-the-gulp-y-way-bb359b3f9623">Gulp + Browserify, the Gulp-y Way</a></li>
+<li><a href="https://viget.com/extend/gulp-browserify-starter-faq">Gulp + Browserify</a></li>
+<li><a href="https://github.com/gulpjs/gulp/blob/master/docs/recipes/fast-browserify-builds-with-watchify.md">快速构建Browserify和Watchify</a></li>
+</ul>
+
+
+<h4>Gulp with Angular</h4>
+
+<ul>
+<li><a href="http://blog.jhades.org/what-every-angular-project-likely-needs-and-a-gulp-build-to-provide-it/">Angular工程需要什么 - Gulp能提供什么</a></li>
+</ul>
+
+
+<h4>Gulp with Angular and Browserify</h4>
+
+<ul>
+<li><a href="http://omarfouad.com/blog/2015/03/21/advanced-angularjs-structure-with-gulp-node-and-browserify/">使用 Gulp, Node and Browserify构建先进的 AngularJS工程结构</a></li>
+</ul>
+
+
+<h4>Gulp with React and Browserify</h4>
+
+<ul>
+<li><a href="https://hacks.mozilla.org/2014/08/browserify-and-gulp-with-react/">Browserify、Gulp 和 React</a></li>
+<li><a href="http://pomax.github.io/1420592591221/taking-react-to-the-next-level-mixins-gulp-and-browserify">Taking React to the Next Level: Mixins, Gulp, and Browserify</a></li>
+</ul>
+
+
+<h4>Gulp with Ember</h4>
+
+<ul>
+<li><a href="http://www.sitepoint.com/improving-ember-js-workflow-using-gulp-js/">使用Gulp.js改进你的Ember.js工作流</a></li>
+</ul>
+
+
+<h3>其他资源</h3>
+
+<ul>
+<li><a href="https://github.com/osscafe/gulp-cheatsheet">Gulp 备忘录</a></li>
+<li><a href="https://github.com/johnpapa/gulp-patterns">Gulp清单</a></li>
+</ul>
+
+
+<h2>插件</h2>
+
+<h3>编译</h3>
+
+<ul>
+<li><a href="https://github.com/dlmanning/gulp-sass">gulp-sass</a> - 通过 <a href="https://github.com/sass/libsass">libsass</a>将Sass编译成 CSS</li>
+<li><a href="https://github.com/sindresorhus/gulp-ruby-sass">gulp-ruby-sass</a> - 通过 Ruby Sass将Sass编译成CSS</li>
+<li><a href="https://github.com/appleboy/gulp-compass">gulp-compass</a> - 通过 Ruby Sass和CompassSass编译成CSS</li>
+<li><a href="https://github.com/plus3network/gulp-less">gulp-less</a> - <a href="https://github.com/less/less.js">Less</a>编译成 CSS.</li>
+<li><a href="https://github.com/stevelacy/gulp-stylus">gulp-stylus</a> - <a href="https://github.com/stylus/stylus">Stylus</a> 编译成 CSS.</li>
+<li><a href="https://github.com/postcss/gulp-postcss">gulp-postcss</a> - Pipe CSS 通过 <a href="https://github.com/postcss/postcss">PostCSS</a> processors with a single parse.</li>
+<li><a href="https://github.com/contra/gulp-coffee">gulp-coffee</a> - <a href="https://github.com/jashkenas/coffeescript">Coffeescript</a> 编译成 JavaScript.</li>
+<li><a href="https://github.com/ivogabe/gulp-typescript">gulp-typescript</a> - <a href="https://github.com/Microsoft/TypeScript">TypeScript</a>编译成JavaScript.</li>
+<li><a href="https://github.com/sindresorhus/gulp-react">gulp-react</a> - Facebook <a href="https://github.com/facebook/react">React</a> JSX 模板编译成JavaScript.</li>
+<li><p><a href="https://github.com/shama/webpack-stream">webpack-stream</a> - 将<a href="https://github.com/webpack/webpack">webpack</a>集成在Gulp中使用。</p></li>
+<li><p><a href="https://github.com/babel/gulp-babel">gulp-babel</a> - ES6编译成ES5 通过 <a href="https://github.com/babel/babel">babel</a>.</p></li>
+<li><a href="https://github.com/sindresorhus/gulp-traceur">gulp-traceur</a> - ES6编译成ES5 通过 <a href="https://github.com/google/traceur-compiler">Traceur</a>.</li>
+<li><a href="https://github.com/sindresorhus/gulp-regenerator">gulp-regenerator</a> - ES6编译成ES5 通过 <a href="https://github.com/facebook/regenerator">Regenerator</a>.</li>
+<li><a href="https://github.com/sindresorhus/gulp-es6-transpiler">gulp-es6-transpiler</a> - [过时的] ES6编译成ES5 通过 <a href="https://github.com/termi/es6-transpiler">es6-transpiler</a>.</li>
+<li><a href="https://github.com/sindresorhus/gulp-myth">gulp-myth</a> - <a href="https://github.com/segmentio/myth">Myth</a> - a polyfill for future versions of the CSS spec.</li>
+<li><a href="https://github.com/MoOx/gulp-cssnext">gulp-cssnext</a> - [过时的] 使用下一代的 CSS 规范通过 <a href="https://github.com/MoOx/postcss-cssnext">cssnext</a>.</li>
+</ul>
+
+
+<h3>合并</h3>
+
+<ul>
+<li><a href="https://github.com/contra/gulp-concat">gulp-concat</a> - 合并文件.</li>
+</ul>
+
+
+<h3>压缩</h3>
+
+<ul>
+<li><a href="https://github.com/scniro/gulp-clean-css">gulp-clean-css</a> - 压缩 CSS 通过 <a href="https://github.com/jakubpawlowicz/clean-css">clean-css</a>.</li>
+<li><a href="https://github.com/ben-eb/gulp-csso">gulp-csso</a> - 压缩 CSS 通过 <a href="https://github.com/css/csso">CSSO</a>.</li>
+<li><a href="https://github.com/terinjokes/gulp-uglify">gulp-uglify</a> - 压缩 JavaScript 通过 <a href="https://github.com/mishoo/UglifyJS2">UglifyJS2</a>.</li>
+<li><a href="https://github.com/jonschlinkert/gulp-htmlmin">gulp-htmlmin</a> - 压缩 HTML 通过 <a href="https://github.com/kangax/html-minifier">html-minifier</a>.</li>
+<li><a href="https://github.com/murphydanger/gulp-minify-html">gulp-minify-html</a> - 压缩 HTML 通过
+<a href="https://github.com/Swaagie/minimize">Minimize</a>.</li>
+<li><a href="https://github.com/sindresorhus/gulp-imagemin">gulp-imagemin</a> - 压缩 PNG, JPEG, GIF and SVG 图片 通过 <a href="https://github.com/imagemin/imagemin">imagemin</a>.</li>
+<li><a href="https://github.com/ben-eb/gulp-svgmin">gulp-svgmin</a> - 通过Gulp压缩 SVG 文件</li>
+</ul>
+
+
+<h3>优化</h3>
+
+<ul>
+<li><a href="https://github.com/ben-eb/gulp-uncss">gulp-uncss</a> - 移除未使用的CSS选择器通过 <a href="https://github.com/giakki/uncss">UnCSS</a>.</li>
+<li><a href="https://github.com/zckrs/gulp-css-base64">gulp-css-base64</a> - 将CSS文件中所有的资源(有url()声明的)变成base64-encoded 数据的URI字符串</li>
+<li><a href="https://github.com/akoenig/gulp-svg2png">gulp-svg2png</a> - 将SVGs转换成PNGs</li>
+<li><a href="https://github.com/mahnunchik/gulp-responsive">gulp-responsive</a> - 生成不同尺寸的图片</li>
+<li><a href="https://github.com/w0rm/gulp-svgstore">gulp-svgstore</a> -将svg files 合并成一个通过<symbol> 元素</li>
+<li><a href="https://github.com/nfroidure/gulp-iconfont">gulp-iconfont</a> - 通过SVG icons创建 icon fonts</li>
+</ul>
+
+
+<h3>资源注入</h3>
+
+<ul>
+<li><a href="https://github.com/jonkemp/gulp-useref">gulp-useref</a> - 解析HTML文件中特殊标签里面的script或style标签，合并成一个script或css文件，并替换。</li>
+<li><a href="https://github.com/klei/gulp-inject">gulp-inject</a> - 将指定的css或js文件以标签的形式插入到HTML中的指定标志内。</li>
+<li><a href="https://github.com/taptapship/wiredep">wiredep</a> - 将Bower依赖自动注入HTML文件中。</li>
+</ul>
+
+
+<h3>模板</h3>
+
+<ul>
+<li><a href="https://github.com/miickel/gulp-angular-templatecache">gulp-angular-templatecache</a> - 在$templateCache中联系并注册AngularJS模板</li>
+<li><a href="https://github.com/phated/gulp-jade">gulp-jade</a> - <a href="https://github.com/pugjs/jade">Jade</a> 转换成 HTML.</li>
+<li><a href="https://github.com/lazd/gulp-handlebars">gulp-handlebars</a> - <a href="https://github.com/wycats/handlebars.js">Handlebars</a>模板转换成 JavaScript.</li>
+<li><a href="https://github.com/shannonmoeller/gulp-hb">gulp-hb</a> - <a href="https://github.com/wycats/handlebars.js">Handlebars</a> 模板转换成 HTML.</li>
+<li><a href="https://github.com/sindresorhus/gulp-nunjucks">gulp-nunjucks</a> - <a href="https://github.com/mozilla/nunjucks">Nunjucks</a>模板转换成JavaScript.</li>
+<li><a href="https://github.com/sindresorhus/gulp-dust">gulp-dustjs</a> - <a href="https://github.com/linkedin/dustjs">Dust</a>模板转换成JavaScript.</li>
+<li><a href="https://github.com/e-jigsaw/gulp-riot">gulp-riot</a> - <a href="https://github.com/riot/riot">Riot</a>模板转换成JavaScript.</li>
+<li><a href="https://github.com/sindresorhus/gulp-markdown">gulp-markdown</a> - Markdown → HTML.</li>
+<li><a href="https://github.com/sindresorhus/gulp-template">gulp-template</a> - <a href="https://github.com/lodash/lodash">Lodash </a>模板转换成JavaScript.</li>
+<li><a href="https://github.com/colynb/gulp-swig">gulp-swig</a> - <a href="https://github.com/paularmstrong/swig">Swig</a>模板转换成HTML.</li>
+<li><a href="https://github.com/denysdovhan/gulp-remark">gulp-remark</a> - Gulp plugin for [remark]的Gulp插件(<a href="https://github.com/wooorm/remark">https://github.com/wooorm/remark</a>) 通过插件处理markdown</li>
+</ul>
+
+
+<h3>代码校验</h3>
+
+<ul>
+<li><a href="https://www.npmjs.com/package/gulp-csslint">gulp-csslint</a> - 通过<a href="https://github.com/CSSLint/csslint">CSSLint</a>自动校验CSS.</li>
+<li><a href="https://github.com/bezoerb/gulp-htmlhint">gulp-htmlhint</a> - 通过<a href="https://github.com/yaniswang/HTMLHint">HTMLHint</a>校验HTML.</li>
+<li><a href="https://github.com/spalger/gulp-jshint">gulp-jshint</a> - 通过<a href="https://github.com/jshint/jshint">JSHint</a>发现错误和潜在的问题.</li>
+<li><a href="https://github.com/jscs-dev/gulp-jscs">gulp-jscs</a> - 通过<a href="https://github.com/jscs-dev/node-jscs">jscs</a>检查JavaScript代码风格.</li>
+<li><a href="https://github.com/janraasch/gulp-coffeelint">gulp-coffeelint</a> - 一种用来保证<a href="https://github.com/jashkenas/coffeescript">CoffeeScript</a>代码风格统一的检查。</li>
+<li><a href="https://github.com/panuhorsmalahti/gulp-tslint">gulp-tslint</a> - gulp的<a href="https://github.com/Microsoft/TypeScript">TypeScript</a>代码校验插件.</li>
+<li><a href="https://github.com/adametry/gulp-eslint">gulp-eslint</a> - ECMAScript/JavaScript代码校验.</li>
+<li><a href="https://github.com/callumacrae/gulp-w3cjs">gulp-w3cjs</a> - 通过<a href="https://github.com/thomasdavis/w3cjs">w3cjs</a>检验HTML.</li>
+<li><a href="https://github.com/lesshint/gulp-lesshint">gulp-lesshint</a> - 通过<a href="https://github.com/lesshint/lesshint">lesshint</a>校验LESS.</li>
+</ul>
+
+
+<h3>实时加载</h3>
+
+<ul>
+<li><a href="https://github.com/BrowserSync/browser-sync">browser-sync</a> - 保证多个浏览器或设备网页同步显示 (<a href="https://github.com/BrowserSync/gulp-browser-sync">recipes</a>).</li>
+<li><a href="https://github.com/vohof/gulp-livereload">gulp-livereload</a> - Gulp的实时加载插件.</li>
+</ul>
+
+
+<h3>缓存</h3>
+
+<ul>
+<li><a href="https://github.com/sindresorhus/gulp-changed">gulp-changed</a> - 仅让发生改变的文件通过.</li>
+<li><a href="https://github.com/contra/gulp-cached">gulp-cached</a> - 一个简单的文件内存缓存.</li>
+<li><a href="https://github.com/ahaurw01/gulp-remember">gulp-remember</a> - 记忆并回收通过了的文件.</li>
+<li><a href="https://github.com/tschaub/gulp-newer">gulp-newer</a> - 只让新的源码通过.</li>
+</ul>
+
+
+<h3>流控制</h3>
+
+<ul>
+<li><a href="https://github.com/grncdr/merge-stream">merge-stream</a> - 合并多个流到一个插入的流.</li>
+<li><a href="https://github.com/nfroidure/StreamQueue">streamqueue</a> - 逐渐输入队列的流.</li>
+<li><a href="https://github.com/OverZealous/run-sequence">run-sequence</a> - 按要求运行一些依赖的Gulptask.</li>
+<li><a href="https://github.com/robrich/gulp-if">gulp-if</a> - 按照条件运行task.</li>
+</ul>
+
+
+<h3>日志</h3>
+
+<ul>
+<li><a href="https://github.com/mikaelbr/gulp-notify">gulp-notify</a> - Gulp的通知插件.</li>
+<li><a href="https://github.com/sindresorhus/gulp-size">gulp-size</a> - 显示你的项目的大小.</li>
+<li><a href="https://github.com/sindresorhus/gulp-debug">gulp-debug</a> - 通过调试文件流来观察那些文件通过了你的Gulp管道.</li>
+</ul>
+
+
+<h3>测试</h3>
+
+<ul>
+<li><a href="https://github.com/sindresorhus/gulp-mocha">gulp-mocha</a> - 运行<a href="https://github.com/mochajs/mocha">Mocha</a>测试用例.</li>
+<li><a href="https://github.com/sindresorhus/gulp-jasmine">gulp-jasmine</a> - 在Node.js中运行<a href="https://github.com/jasmine/jasmine">Jasmine 2</a> 测试用例.</li>
+<li><a href="https://github.com/mllrsohn/gulp-protractor">gulp-protractor</a> - 为<a href="https://github.com/angular/protractor">Protractor</a>测试用例包裹Gulp.</li>
+<li><a href="https://github.com/dylanb/gulp-coverage">gulp-coverage</a> - 为Node.js覆盖相对于运行的测试运行独立的报告.</li>
+<li><a href="https://github.com/karma-runner/gulp-karma">gulp-karma</a> - 通过Gulp运行Karma测试用例.</li>
+<li><a href="https://github.com/sindresorhus/gulp-ava">gulp-ava</a>- 通过Gulp运行<a href="https://github.com/sindresorhus/ava">AVA</a> 测试用例.</li>
+</ul>
+
+
+<h3>其他插件</h3>
+
+<ul>
+<li><a href="https://github.com/gulpjs/gulp-util">gulp-util</a> - 包含一系列有用插件.</li>
+<li><a href="https://github.com/floatdrop/gulp-plumber">gulp-plumber</a> - 防止错误引起管道中断Prevent pipe breaking caused by errors.</li>
+<li><a href="https://github.com/jackfranklin/gulp-load-plugins">gulp-load-plugins</a> - 自动加载Gulp插件.</li>
+<li><a href="https://github.com/ck86/main-bower-files">main-bower-files</a> - 构建时自动获取bower库的文件.</li>
+<li><a href="https://github.com/postcss/autoprefixer">autoprefixer</a> - 解析CSS且根据规则添加浏览器兼容性前缀.</li>
+<li><a href="https://github.com/floridoo/gulp-sourcemaps">gulp-sourcemaps</a> - 提供source map支持.</li>
+<li><a href="https://github.com/lazd/gulp-replace">gulp-replace</a> - Gulp的一个字符串替换插件.</li>
+<li><a href="https://github.com/hparra/gulp-rename">gulp-rename</a> - 轻松重命名文件.</li>
+<li><a href="https://github.com/sindresorhus/gulp-rev">gulp-rev</a> - 在静态文件名的后面添加hash值，如: unicorn.css → unicorn-d41d8cd98f.css.</li>
+<li><a href="https://github.com/sindresorhus/del">del</a> - 使用globs删除文件/文件夹.</li>
+<li><a href="https://github.com/robrich/gulp-exec">gulp-exec</a> - 运行一个shell命令.</li>
+<li><a href="https://github.com/sindresorhus/gulp-strip-debug">gulp-strip-debug</a> - 除去javascript代码中的console,alert,debugger声明.</li>
+<li><a href="https://github.com/unlight/gulp-cssimport">gulp-cssimport</a> - 解析CSS文件，找到imports,将连接文件替换成imort声明.</li>
+<li><a href="https://github.com/jonkemp/gulp-inline-css">gulp-inline-css</a> - 将HTML中的css属性放到style标签中.</li>
+<li><a href="https://github.com/shinnn/gulp-gh-pages">gulp-gh-pages</a> - 将内容发布到GiHub有页面.</li>
+<li><a href="https://github.com/Kagami/gulp-ng-annotate">gulp-ng-annotate</a> - 通过<a href="https://github.com/olov/ng-annotate">ng-annotate</a>添加Angular依赖注入.</li>
+<li><a href="https://github.com/stevelacy/gulp-bump">gulp-bump</a> - 通过Gulp Bump任何semvar JSON版本.</li>
+<li><a href="https://github.com/coderhaoxin/gulp-file-include">gulp-file-include</a> - 通过Gulp Include文件.</li>
+<li><a href="https://github.com/sindresorhus/gulp-zip">gulp-zip</a> - 以ZIP格式压缩文件.</li>
+<li><a href="https://github.com/stevelacy/gulp-git">gulp-git</a> - 通过Gulp运行git命令.</li>
+<li><a href="https://github.com/sindresorhus/gulp-filter">gulp-filter</a> - 使用globbing过滤文件.</li>
+<li><a href="https://github.com/jas/gulp-preprocess">gulp-preprocess</a> - 基于自定义内容或环境配置预处理文件.</li>
+</ul>
+
+
+<h2>脚手架</h2>
+
+<h3>模板</h3>
+
+<ul>
+<li><a href="https://github.com/google/web-starter-kit">web-starter-kit</a> - Google的Web Starter Kit.</li>
+<li><a href="https://github.com/sindresorhus/gulp-plugin-boilerplate">gulp-plugin-boilerplate</a> - 创建Gulp插件的开始模板.</li>
+<li><a href="https://github.com/polymerelements/polymer-starter-kit">polymer-starter-kit</a> -Polymer 1.0 应用的起点.</li>
+<li><a href="https://github.com/este/este">este</a> - 同构的web应用最全面的React/Flux开发栈和开始模板.</li>
+<li><a href="https://github.com/mrmrs/mnml">mnml</a> - 开发响应式HTML5/Sass项目的最小开始模板.</li>
+<li><a href="https://github.com/cferdinandi/kraken">kraken</a> 一个轻量级的、移动端优先的前端开发开始模板.</li>
+<li><a href="https://github.com/jakemmarsh/angularjs-gulp-browserify-boilerplate">angularjs-gulp-browserify-boilerplate</a> - 一个使用AngularJS, Sass, gulp, 和 Browserify技术的开始模板.</li>
+<li><a href="https://github.com/poeticninja/hapi-ninja">hapi-ninja</a> - 一个使用Node.js, Hapi, and Swig技术的开始模板.</li>
+<li><a href="https://github.com/rappasoft/laravel-5-boilerplate">laravel-5-boilerplate</a> - 一个Laravel 5 开始模板.</li>
+<li><a href="https://github.com/wbkd/react-starterkit">react-starterkit</a> - 包含react-router, Reflux, jest, webpack, gulp and Stylus的React开始模板.</li>
+</ul>
+
+
+<h3>Yeoman生成器</h3>
+
+<ul>
+<li><a href="https://github.com/yeoman/generator-gulp-webapp">generator-gulp-webapp</a> - A 一个流行的web应用的gulp生成器.</li>
+<li><a href="https://github.com/Swiip/generator-gulp-angular">generator-gulp-angular</a> -  使用Gulp的AngularJS 的Yeoman生成器.</li>
+<li><a href="https://github.com/randylien/generator-react-gulp-browserify">generator-react-gulp-browserify</a> - 一个React库的Yeoman生成器，包含gulp, Browserify, Browsersync and Bootstrap.</li>
+<li><a href="https://github.com/youngmountain/generator-node-gulp">generator-node-gulp</a> - 一个Node.js模块生成器，包含gulp和 Mocha.</li>
+<li><a href="https://github.com/niallobrien/generator-gulp-bootstrap">generator-gulp-bootstrap</a> - 一个包含Bootstrap, gulp 和libsass的Yeoman生成器·.</li>
+<li><a href="https://github.com/jgoux/generator-angulpify">generator-angulpify</a> -  一个包含AngularJS, gulp和Browserify的Yeoman生成器.</li>
+<li><a href="https://github.com/tmaximini/generator-ionic-gulp">generator-ionic-gulp</a> - 一个Ionic工厂的Yeoman生成器.</li>
+<li><a href="https://github.com/sindresorhus/generator-gulp-plugin-boilerplate">generator-gulp-plugin-boilerplate</a> -一个输出 <a href="https://github.com/sindresorhus/gulp-plugin-boilerplate">gulp plugin boilerplate</a>的脚手架.</li>
+<li><a href="https://github.com/sondr3/generator-jekyllized">generator-jekyllized</a> - 一个包含gulp, Sass, AutoPrefixer,资源优化，缓存等的Jekyll工作流.</li>
+</ul>
+
+
+<h2>其他</h2>
+
+<ul>
+<li><a href="https://github.com/laravel/elixir">elixir</a> - 一个为你的应用定义基本的gulp任务的干净、灵活的API.</li>
+<li><a href="https://github.com/sindresorhus/gulp-app">gulp-app</a> - 将Gulp作为一个应用(OS X).</li>
+<li><a href="https://github.com/Lostmyname/lmn-gulp-tasks">lmn-gulp-tasks</a> - gulp任务的单元测试示例.</li>
+<li><a href="http://gulp-cookery.github.io/gulp-chef/">gulp-chef</a> - 一个优雅的、简单的重复使用gulp task的方法.</li>
+</ul>
+
+
+<h2>证书</h2>
+
+<p><a href="http://creativecommons.org/publicdomain/zero/1.0/"><img src="http://i.creativecommons.org/p/zero/1.0/88x31.png" alt="CC0" /></a></p>
+]]></content>
+  </entry>
   
 </feed>

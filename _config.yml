@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://glgjing.github.io
-title: GLGJing's Blog
+url: http://pines-cheng.github.io
+title: Pines Cheng's Blog
 subtitle: If you want to go fast, go alone. If you want to go far, bring others along.
-author: GLGJing
+author: Pines Cheng
 simple_search: https://www.google.com/search
 description:
 
@@ -19,7 +19,7 @@ date_format: "ordinal"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email: GLGJing@gmail.com
+email: spider.cs.nuc@gmail.com
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -64,8 +64,8 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Github repositories
-github_user: GLGJing
-github_repo_count: 1
+github_user: Pines-Cheng
+github_repo_count: 5
 github_show_profile_link: true
 github_skip_forks: true
 
