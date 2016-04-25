@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "关于Pines Cheng"
-comments: true
+comments: false
 sharing: true
 footer: false
 ---
