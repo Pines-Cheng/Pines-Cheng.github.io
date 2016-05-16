@@ -19,6 +19,7 @@ bindThis(function(a, b) {
 ```
 6
 ```
+<!--more-->
 
 ###分析
 ####题目拆解

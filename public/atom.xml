@@ -4,7 +4,7 @@
   <title><![CDATA[Pines Cheng's Blog]]></title>
   <link href="http://pines-cheng.github.io/atom.xml" rel="self"/>
   <link href="http://pines-cheng.github.io/"/>
-  <updated>2016-05-16T23:52:33+08:00</updated>
+  <updated>2016-05-16T23:58:40+08:00</updated>
   <id>http://pines-cheng.github.io/</id>
   <author>
     <name><![CDATA[Pines Cheng]]></name>
@@ -36,6 +36,9 @@
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>6</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
 
 
 <h3>分析</h3>
