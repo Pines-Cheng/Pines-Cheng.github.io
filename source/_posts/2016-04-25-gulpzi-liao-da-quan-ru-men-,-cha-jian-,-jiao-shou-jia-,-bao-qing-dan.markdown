@@ -3,7 +3,8 @@ layout: post
 title: "Gulp资料大全:入门、插件、脚手架、包清单"
 date: 2016-04-25 00:04:08 +0800
 comments: true
-categories: 
+categories: 前端
+tags: [gulp,前端工程] 
 ---
 
 # [awesome-gulp](https://github.com/alferov/awesome-gulp)中文版 
