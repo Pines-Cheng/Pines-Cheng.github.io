@@ -5,16 +5,19 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>修改this指针 - Pines Cheng&#8217;s Blog</title>
+  <title>Javascript判断数据类型 - Pines Cheng&#8217;s Blog</title>
   <meta name="author" content="Pines Cheng">
 
   
-  <meta name="description" content="题目 封装函数 f，使 f 的 this 指向指定的对象 。 输入例子 1
+  <meta name="description" content="题目 实现一个函数typeof()，输入一个数据，返回数据的基本类型。
+如： 1
 2
 3
-bindThis(function(a, b) { return this.test + a + b；
-}, {test: 1})(2, 3)； 输出例子 1
-6 分析 题目拆解 该题目的要求是： &hellip;">
+4
+typeof([]) =&gt; array
+typeof({}) =&gt; object
+typeof("") =&gt; string
+等等 解析 由于javascript这门语言辉(keng)煌( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,7 +26,7 @@ bindThis(function(a, b) { return this.test + a + b；
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pines-cheng.github.io/blog/2016/05/16/xiu-gai-thiszhi-zhen">
+  <link rel="canonical" href="http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -116,7 +119,7 @@ bindThis(function(a, b) { return this.test + a + b；
   <header>
     
       
-        <h1 class="entry-title">修改this指针</h1>
+        <h1 class="entry-title">Javascript判断数据类型</h1>
       
     
     
@@ -126,7 +129,7 @@ bindThis(function(a, b) { return this.test + a + b；
 
 
 
-<time class='entry-date' datetime='2016-05-16T23:49:23+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:49 pm</span></time>
+<time class='entry-date' datetime='2016-05-21T21:07:35+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>9:07 pm</span></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -138,32 +141,142 @@ bindThis(function(a, b) { return this.test + a + b；
 
 <div class="entry-content"><h3>题目</h3>
 
-<p>  封装函数 f，使 f 的 this 指向指定的对象 。</p>
-
-<h4>输入例子</h4>
+<p>实现一个函数typeof()，输入一个数据，返回数据的基本类型。
+如：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bindThis(function(a, b) {
-</span><span class='line'>  return this.test + a + b；
-</span><span class='line'>}, {test: 1})(2, 3)；</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>输出例子</h4>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>6</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typeof([]) =&gt; array
+</span><span class='line'>typeof({}) =&gt; object
+</span><span class='line'>typeof("") =&gt; string
+</span><span class='line'>等等</span></code></pre></td></tr></table></div></figure>
 
 
 <!--more-->
 
 
-<h3>分析</h3>
+<h3>解析</h3>
 
-<h4>题目拆解</h4>
+<p>   由于javascript这门语言辉(keng)煌(die)的历史，所以连这种简单的需求都需要自己来实现，唉，说多了，都是泪啊。</p>
 
-<p>  该题目的要求是：封装一个函数bindThis，该函数有两个参数，第一个参数是一个内部有使用this指针的函数f，第二个参数是一个对象obj，执行bindThis之后，返回一个函数，该函数里面的this就被绑定到obj上面。。。好吧，我承认我刚看到这个时，也很晕，但是如果我把它写成下面的样子，是不是就感觉好多了呢？</p>
+<p>   这儿题目相对来说应该是比较简单的，但是也是有不少坑，想要真正实现的很好，还是需要用到不少知识的。</p>
+
+<p>   一开始，肯定有人想到使用<code>typeof</code>，顾名思义嘛，就是判断数据的类型，但是，可是，实际真的是这样吗？</p>
+
+<h4>typeof操作符</h4>
+
+<blockquote><p>typeof 操作符（和 instanceof 一起）或许是 JavaScript 中最大的设计缺陷， 因为几乎不可能从它们那里得到想要的结果。         &ndash;javascript秘密花园</p></blockquote>
+
+<p>尽管 instanceof 还有一些极少数的应用场景，typeof 只有一个实际的应用，就是用来检测一个对象是否已经定义或者是否已经赋值，而这个应用却不是用来检查对象的类型。（好吧，这个其实貌似也并没有什么卵用。。。）</p>
+
+<p>在下面表格中，Type 一列表示 typeof 操作符的运算结果。其中，JavaScript 标准文档中定义: [[Class]] 的值只可能是下面12个字符串中的一个： <code>Arguments</code>, <code>Array</code>, <code>Boolean</code>, <code>Date</code>, <code>Error</code>, <code>Function</code>, <code>JSON</code>, <code>Math</code>, <code>Number</code>, <code>Object</code>, <code>RegExp</code>, <code>String</code>。可以看到，这个值在大多数情况下都返回 &ldquo;object&#8221;。</p>
+
+<table>
+<thead>
+<tr>
+<th> Value     </th>
+<th style="text-align:center;">          Class   </th>
+<th style="text-align:right;">   Type </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> &ldquo;foo&rdquo;             </td>
+<td style="text-align:center;">  String  </td>
+<td style="text-align:right;">   string </td>
+</tr>
+<tr>
+<td> new String(&ldquo;foo&rdquo;) </td>
+<td style="text-align:center;">  String  </td>
+<td style="text-align:right;">   object </td>
+</tr>
+<tr>
+<td> 1.2               </td>
+<td style="text-align:center;">  Number  </td>
+<td style="text-align:right;">   number </td>
+</tr>
+<tr>
+<td> new Number(1.2)   </td>
+<td style="text-align:center;">  Number  </td>
+<td style="text-align:right;">   object </td>
+</tr>
+<tr>
+<td> true              </td>
+<td style="text-align:center;">  Boolean </td>
+<td style="text-align:right;">   boolean </td>
+</tr>
+<tr>
+<td> new Boolean(true) </td>
+<td style="text-align:center;">  Boolean </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Date()        </td>
+<td style="text-align:center;">  Date    </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Error()       </td>
+<td style="text-align:center;">  Error   </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> [1,2,3]           </td>
+<td style="text-align:center;">  Array   </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Array(1, 2, 3)</td>
+<td style="text-align:center;">  Array   </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Function(&ldquo;&rdquo;)  </td>
+<td style="text-align:center;">  Function </td>
+<td style="text-align:right;">   function </td>
+</tr>
+<tr>
+<td> /abc/g            </td>
+<td style="text-align:center;">  RegExp   </td>
+<td style="text-align:right;">  object (function in Nitro/V8) </td>
+</tr>
+<tr>
+<td> new RegExp(&ldquo;meow&rdquo;) </td>
+<td style="text-align:center;"> RegExp   </td>
+<td style="text-align:right;">  object (function in Nitro/V8) </td>
+</tr>
+<tr>
+<td> {}                </td>
+<td style="text-align:center;">  Object   </td>
+<td style="text-align:right;">  object  </td>
+</tr>
+<tr>
+<td> new Object()      </td>
+<td style="text-align:center;">  Object    </td>
+<td style="text-align:right;"> object     </td>
+</tr>
+</tbody>
+</table>
+
+
+<p> #####测试为定义变量</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typeof foo !== 'undefined'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面代码会检测 foo 是否已经定义；如果没有定义而直接使用会导致 <code>ReferenceError</code> 的异常。 这是 typeof <code>唯一有用</code>的地方。</p>
+
+<h4>instanceof 操作符</h4>
+
+<p>刚说完，typeof,肯定又有人想用instanceof，但是，instanceof真的有用吗？</p>
+
+<p>instanceof 操作符用来比较两个操作数的<code>构造函数</code>，instanceof 运算符与 typeof 运算符相似，用于识别正在处理的对象的类型。具体的可以看看这个<a href="https://www.ibm.com/developerworks/cn/web/1306_jiangjj_jsinstanceof/">JavaScript instanceof 运算符深入剖析</a>。
+因此，instanceof在判断一个对象是不是一个类的<code>实例</code>只有在比较自定义的对象时才有意义。 如果用来比较内置类型，将会和 typeof 操作符 一样用处不大。</p>
+
+<h5>比较自定义对象</h5>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -175,64 +288,78 @@ bindThis(function(a, b) { return this.test + a + b；
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>function f(a, b) {
-</span><span class='line'>  return this.test + a + b；
+</pre></td><td class='code'><pre><code class=''><span class='line'>function Foo() {}
+</span><span class='line'>function Bar() {}
+</span><span class='line'>Bar.prototype = new Foo();
+</span><span class='line'>
+</span><span class='line'>new Bar() instanceof Bar; // true
+</span><span class='line'>new Bar() instanceof Foo; // true
+</span><span class='line'>
+</span><span class='line'>// 如果仅仅设置 Bar.prototype 为函数 Foo 本身，而不是 Foo 构造函数的一个实例。
+</span><span class='line'>Bar.prototype = Foo;
+</span><span class='line'>new Bar() instanceof Foo; // false</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>instanceof 比较内置类型</h4>
+
+<p>但是，不是通过构造函数创建的对象使用instanceof比较，那得到的，可能就不是你想要的结果。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>new String('foo') instanceof String; // true
+</span><span class='line'>new String('foo') instanceof Object; // true
+</span><span class='line'>
+</span><span class='line'>'foo' instanceof String; // false
+</span><span class='line'>'foo' instanceof Object; // false</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>注意</h5>
+
+<p>还有有一点需要注意，instanceof 用来比较属于不同 JavaScript 上下文的对象（比如，浏览器中不同的文档结构）时将会出错， 因为它们的构造函数不会是同一个对象。</p>
+
+<p>看到这里，是不是很震惊？你所知道的知道的方法，都是错的。。。唉，当初我知道了这个也是泪流满面啊。。。</p>
+
+<h4>解决方法</h4>
+
+<p>javascript对象的内部属性 [[Class]] 的值就包含有j其对象的类型，为了获取对象的 [[Class]]，我们需要使用定义在 Object.prototype 上的方法 toString。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function is(type, obj) {
+</span><span class='line'>    var clas = Object.prototype.toString.call(obj).slice(8, -1);
+</span><span class='line'>    return obj !== undefined && obj !== null && clas === type;
 </span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'>function bindThis(f, obj) {
-</span><span class='line'>  //你实现的部分
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>//执行函数
-</span><span class='line'>var a = bindThis(f,{test:1});
-</span><span class='line'>a(2,3);</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>is('String', 'test'); // true
+</span><span class='line'>is('String', new String('test')); // true
+</span></code></pre></td></tr></table></div></figure>
 
 
-<h4>什么是this</h4>
+<p>Object.prototype.toString 返回一种标准格式字符串，所以上例可以通过 slice 截取指定位置的字符串，如下所示：</p>
 
-<p>  this是Javascript语言的一个关键字。它代表函数<code>运行时</code>，自动生成的一个内部对象，只能在函数内部使用(类似的还有arguments)。具体的大家可以看看<a href="http://www.ruanyifeng.com/blog">阮一峰</a>的<a href="http://www.ruanyifeng.com/blog/2010/04/using_this_keyword_in_javascript.html">Javascript的this用法</a>
-和变量不同，关键字this没有作用域的限制，嵌套的函数不会从调用它的函数中继承this。
-简单的将this的指向分为四种情况：</p>
-
-<ul>
-<li><p>函数调用</p>
-
-<p>  这是函数的最通常用法，属于全局性调用，其this的值不是全局对象Global（非严格模式下）就是undefined（严格模式下）。</p></li>
-<li><p>对象方法调用</p>
-
-<p>  函数还可以作为某个对象的方法调用，这时this就指这个上级对象.</p></li>
-<li><p>构造函数调用</p>
-
-<p>  所谓构造函数，就是通过这个函数生成一个新对象（object）。这时，this就指这个新对象。</p></li>
-<li><p>bind apply call</p>
-
-<p>  apply()是函数对象的一个方法，它的作用是改变函数的调用对象，它的第一个参数就表示改变后的调用这个函数的对象。因此，this指的就是这第一个参数。bind,call类似。</p></li>
-</ul>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Object.prototype.toString.call([])    // "[object Array]"
+</span><span class='line'>Object.prototype.toString.call({})    // "[object Object]"
+</span><span class='line'>Object.prototype.toString.call(2)    // "[object Number]"</span></code></pre></td></tr></table></div></figure>
 
 
-<p>总结：<strong>this关键字就是，谁调用我，我就指向谁。</strong></p>
+<h4>看看大神的解决方案</h4>
 
-<h3>解决方法</h3>
+<p>如果我没记错，在<code>jQuery</code>和<code>underscore</code>等库中都有判断数据类型的函数，可能平时大家也就用用，没有仔细了解过它们的底层是怎么实现的，</p>
 
-<p>首先，看到<code>this的绑定</code>这几个字，你是不想条件反射的想起了javascript的三剑客:bind apply call?</p>
+<p><strong>我们要会使用框架，但不要依赖框架</strong></p>
 
-<h4>bind apply call的区别</h4>
-
-<p>call 和 apply 都是为了改变某个函数运行时的 context 即上下文而存在的，换句话说，就是为了<code>改变函数体内部 this 的指向</code>。因为 JavaScript 的函数存在「定义时上下文」和「运行时上下文」以及「上下文是可以改变的」这样的概念。</p>
-
-<ul>
-<li>相同点：
-  都可以为函数绑定this。</li>
-<li>不同点：
-  call和apply基本的区别：参数不同。apply() 接收两个参数，第一个是绑定 this 的值，第二个是一个参数数组。而 call() 呢，它的第一个参数也是绑定给 this 的值，但是后面接受的是不定参数，而不再是一个数组，也就是说你可以像平时给函数传参那样把这些参数一个一个传递。
-bind的区别：创建一个新的函数。具体的可以看看这篇文章<a href="http://andyyou.logdown.com/posts/233010-understanding-javascript-functionprototypebind">理解 Javascript 的 Function.prototype.bind</a></li>
-</ul>
-
-
-<h4>解决方法一：使用bind()</h4>
-
-<p>下面的例子是其中一个解决方法，同时也说明了bind()方法是创建了一个新的函数。</p>
+<p>以后大家再碰到类似的问题的时候，不妨查看一下这些成熟框架或库的实现源码，这里，我抛出jQuery的实现源码，抛砖引玉。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -247,74 +374,24 @@ bind的区别：创建一个新的函数。具体的可以看看这篇文章<a h
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>function f(a, b) {
-</span><span class='line'>  return this.test + a + b;
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>function bindThis(f, obj) {
-</span><span class='line'>  //你实现的部分
-</span><span class='line'>  return f.bind(obj);
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>//执行函数
-</span><span class='line'>var a = bindThis(f,{test:1});
-</span><span class='line'>console.log(a(2,3));
-</span><span class='line'>console.log(f(2,3));</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>输出结果</strong>：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>6
-</span><span class='line'>NaN</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>解决方法二：使用apply()</h4>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>function bindThis(f, obj) {
-</span><span class='line'>    //你实现的部分
-</span><span class='line'>    return function () {
-</span><span class='line'>        return f.apply(obj, arguments);
-</span><span class='line'>    };
+</pre></td><td class='code'><pre><code class=''><span class='line'>var class2type = {} ;
+</span><span class='line'>"Boolean Number String Function Array Date RegExp Object Error".split(" ").forEach(function(e,i){
+</span><span class='line'>    class2type[ "[object " + e + "]" ] = e.toLowerCase();
+</span><span class='line'>}) ;
+</span><span class='line'>//当然为了兼容IE低版本，forEach需要一个polyfill，不作细谈了。
+</span><span class='line'>function _typeof(obj){
+</span><span class='line'>    if ( obj == null ){
+</span><span class='line'>        return String( obj );
+</span><span class='line'>    }
+</span><span class='line'>    return typeof obj === "object" || typeof obj === "function" ?
+</span><span class='line'>    class2type[ Object.prototype.toString.call(obj) ] || "object" :
+</span><span class='line'>        typeof obj;
 </span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>这里使用一个函数包装了一下apply方法，然后返回该函数。</p>
+<h3>结论：</h3>
 
-<p><code>arguments</code>是JavaScript 中每个函数内都能访问一个特别变量 arguments。这个变量维护着所有传递到这个函数中的参数列表。</p>
-
-<p>注意: 由于 arguments 已经被定义为函数内的一个变量。 因此通过 var 关键字定义 arguments 或者将 arguments 声明为一个形式参数， 都将导致原生的 arguments 不会被创建。</p>
-
-<p>arguments 变量不是一个数组（Array）。 尽管在语法上它有数组相关的属性 length，但它不从 Array.prototype 继承，实际上它是一个对象（Object）。</p>
-
-<h4>解决方法三：使用call()</h4>
-
-<p>和apply()类似，仅参数的传入方式不同。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>function bindThis(f, obj) {
-</span><span class='line'>    //你实现的部分
-</span><span class='line'>    return function (a,b) {
-</span><span class='line'>        return f.call(obj, a,b);
-</span><span class='line'>    };
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>总结</h3>
-
-<p>该题目主要考察的是this关键字及改变this指向的方法，再下才疏学浅，只能找到这几个方法了，但是鉴于javascript这门语言的灵活性，我老感觉应该是还有其他的方法的，希望各位知道了能够不吝赐教。</p>
+<p>看源码是程序员快速成长的重要方式。</p>
 </div>
 
 
@@ -337,22 +414,16 @@ bind的区别：创建一个新的函数。具体的可以看看这篇文章<a h
 
 
 
-<time class='entry-date' datetime='2016-05-16T23:49:23+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:49 pm</span></time>
+<time class='entry-date' datetime='2016-05-21T21:07:35+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>9:07 pm</span></time>
       
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/javascriptji-chu/'>javascript基础</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pines-cheng.github.io/blog/2016/05/16/xiu-gai-thiszhi-zhen/" data-via="" data-counturl="http://pines-cheng.github.io/blog/2016/05/16/xiu-gai-thiszhi-zhen/" >Twitter</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/" data-via="" data-counturl="http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/" >Twitter</a>
   
   
   
@@ -361,10 +432,8 @@ bind的区别：创建一个新的函数。具体的可以看看这篇文章<a h
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/04/25/gulpzi-liao-da-quan-ru-men-,-cha-jian-,-jiao-shou-jia-,-bao-qing-dan/" title="Previous Post: Gulp资料大全:入门、插件、脚手架、包清单">&laquo; Gulp资料大全:入门、插件、脚手架、包清单</a>
+        <a class="basic-alignment left" href="/blog/2016/05/16/xiu-gai-thiszhi-zhen/" title="Previous Post: 修改this指针">&laquo; 修改this指针</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/" title="Next Post: javascript判断数据类型">javascript判断数据类型 &raquo;</a>
       
     </p>
   </footer>
@@ -418,8 +487,8 @@ bind的区别：创建一个新的函数。具体的可以看看这篇文章<a h
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://pines-cheng.github.io/blog/2016/05/16/xiu-gai-thiszhi-zhen/';
-        var disqus_url = 'http://pines-cheng.github.io/blog/2016/05/16/xiu-gai-thiszhi-zhen/';
+        var disqus_identifier = 'http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/';
+        var disqus_url = 'http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/';
         var disqus_script = 'embed.js';
       
     (function () {
