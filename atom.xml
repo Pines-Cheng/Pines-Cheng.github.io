@@ -1,0 +1,1191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Pines Cheng's Blog]]></title>
+  <link href="http://pines-cheng.github.io/atom.xml" rel="self"/>
+  <link href="http://pines-cheng.github.io/"/>
+  <updated>2016-06-26T17:29:12+08:00</updated>
+  <id>http://pines-cheng.github.io/</id>
+  <author>
+    <name><![CDATA[Pines Cheng]]></name>
+    <email><![CDATA[spider.cs.nuc@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用Sinopia搭建私有的npm仓库]]></title>
+    <link href="http://pines-cheng.github.io/blog/2016/06/24/shi-yong-sinopiada-jian-si-you-de-npmcang-ku/"/>
+    <updated>2016-06-24T11:54:58+08:00</updated>
+    <id>http://pines-cheng.github.io/blog/2016/06/24/shi-yong-sinopiada-jian-si-you-de-npmcang-ku</id>
+    <content type="html"><![CDATA[<h3>需求</h3>
+
+<p>公司出于自身隐私保护需要,不想把自己的代码开源到包管理区，但是又急需一套完整包管工具，来管理越来越多的组件、模块和项目。对于前端，最熟悉的莫过于npm，bower等；但是bower的市场兼容性明显没有npm强壮，加之commonjs规范的日益成熟。npm应该是前端包管理的不二选择。</p>
+
+<p>公司对于搭建本地私有npm库有如下要求：</p>
+
+<ol>
+<li>私有包托管在内部服务器中</li>
+<li>项目中使用了公共仓库上的公共包，也使用了内部服务器上的私有包</li>
+<li>希望下载的时候，公共包走公共仓库，私有包走内部服务器的私有仓库</li>
+<li>服务器硬盘有限，希望只缓存下载过的包，而不是全部同步。</li>
+<li>对于下载，发布npm包有对应的权限管理，安装方便，配置简单，依赖少。</li>
+</ol>
+
+
+<h3>关于sinopia？</h3>
+
+<p><a href="https://github.com/rlidwka/sinopia">Sinopia</a> 是一个零配置的私有的带缓存功能的npm包管理工具，作者是是<a href="https://github.com/rlidwka">rlidwka</a>，一个大神，也是一只猫～ 往社区内贡献过很多代码，包括 jshttp, markdown-it 等等，也是 Node.js 核心代码库的活跃贡献者。</p>
+
+<p>使用sinopia，你不用安装CouchDB或MYSQL之类的数据库，Sinopia有自己的迷你数据库，如果要下载的包不存在，它将自动去你配置的npm地址上去下载，而且硬盘中只缓存你现在过的包，以节省空间。</p>
+
+<h4>为什么选择sinopia</h4>
+
+<p>sinopia有以下几个优势值得关注：</p>
+
+<ol>
+<li>不同步拉取npm库，占据大量硬盘，没有硬盘被撑爆的问题；</li>
+<li>安装配置极其简单,不需要数据库；</li>
+<li>支持配置上游registry配置，一次拉取即缓存；</li>
+<li>支持forever及pm2守护进程管理；</li>
+</ol>
+
+
+<h4>其他方法</h4>
+
+<ul>
+<li>使用 git+ssh 这种方式直接引用到 GitHub 项目地址</li>
+</ul>
+
+
+<p>嗯，这种方式可行，也最简单，但真真的太烂了，姑且不说不能使用 semver，关键还是 url 太丑，如果是强迫症真的没法忍～</p>
+
+<ul>
+<li>使用cnpm</li>
+</ul>
+
+
+<p>暂且不论 cnpm 只是作为镜像使用，其实这个方案缺点就挺多的，用的人多，速度不一定快，缓存，关键是不支持发布包以及登陆、注册，再加上配置过于复杂。而且，还需要安装数据库。</p>
+
+<ul>
+<li>npm on-site</li>
+</ul>
+
+
+<p>土豪啊，我还能说什么呢。。。但是问题是，npm在国内访问慢，还是不是的无法访问，花钱也买不到好的服务，何必呢。</p>
+
+<h3>部署</h3>
+
+<h4>安装</h4>
+
+<p>首先，你要自己配置nodejs及npm的环境，然后运行</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g sinopia</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>启动</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sinopia
+</span><span class='line'> warn  --- config file  - .....\AppData\Roaming\sinopia\config.yaml
+</span><span class='line'> warn  --- http address - http://localhost:4873/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后打开：<code>http://localhost:4873/</code>
+<img src="http://xuelipi.com/wp-content/uploads/2016/04/20160329130903.jpg" alt="安装成功画面" />
+如果能正常显示，说明安装成功。</p>
+
+<h4>使用pm2启动</h4>
+
+<p>当然，你也可以使用<a href="https://github.com/Unitech/pm2">pm2</a>或其他的守护进程进行管理，具体步骤如下：</p>
+
+<p>安装pm2:<code>nam install -g pm2</code></p>
+
+<p>启动：pm2 start `which sinopia`</p>
+
+<p>更多高级的pm2使用方法可以查看<a href="https://wohugb.gitbooks.io/pm2/content/">pm2电子书</a>，相当详细，强烈推荐。</p>
+
+<h3>服务端配置</h3>
+
+<p>Sinopia的特点是，你在哪个目录运行，它的就会在对应的目录下创建自己的文件。目录下默认有两个文件：<code>config.yaml</code>和<code>storage</code>，<code>htpasswd</code>是添加用户之后自动创建的。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>root@debian:/usr/local/apps/sinopia# ls
+</span><span class='line'>config.yaml  htpasswd  storage</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中config.yaml是用来配置访问权限，代理，文件存储路径等所有配置信息的，htpasswd用来保存用户的账号密码等息息，storage是用来存放npm包的。</p>
+
+<h4>config.yaml配置文件</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#
+</span><span class='line'># This is the default config file. It allows all users to do anything,
+</span><span class='line'># so don't use it on production systems.
+</span><span class='line'>#
+</span><span class='line'># Look here for more config file examples:
+</span><span class='line'># https://github.com/rlidwka/sinopia/tree/master/conf
+</span><span class='line'>#
+</span><span class='line'>
+</span><span class='line'># path to a directory with all packages
+</span><span class='line'>storage: ./storage  //npm包存放的路径
+</span><span class='line'>
+</span><span class='line'>auth:
+</span><span class='line'>  htpasswd:
+</span><span class='line'>    file: ./htpasswd   //保存用户的账号密码等信息
+</span><span class='line'>    # Maximum amount of users allowed to register, defaults to "+inf".
+</span><span class='line'>    # You can set this to -1 to disable registration.
+</span><span class='line'>    max_users: -1  //默认为1000，改为-1，禁止注册
+</span><span class='line'>
+</span><span class='line'># a list of other known repositories we can talk to
+</span><span class='line'>uplinks:
+</span><span class='line'>  npmjs:
+</span><span class='line'>    url: http://registry.npm.taobao.org/  //默认为npm的官网，由于国情，修改 url 让sinopia使用 淘宝的npm镜像地址
+</span><span class='line'>    
+</span><span class='line'>packages:  //配置权限管理
+</span><span class='line'>  '@*/*':
+</span><span class='line'>    # scoped packages
+</span><span class='line'>    access: $all
+</span><span class='line'>    publish: $authenticated
+</span><span class='line'>
+</span><span class='line'>  '*':
+</span><span class='line'>    # allow all users (including non-authenticated users) to read and
+</span><span class='line'>    # publish all packages
+</span><span class='line'>    #
+</span><span class='line'>    # you can specify usernames/groupnames (depending on your auth plugin)
+</span><span class='line'>    # and three keywords: "$all", "$anonymous", "$authenticated"
+</span><span class='line'>    access: $all
+</span><span class='line'>
+</span><span class='line'>    # allow all known users to publish packages
+</span><span class='line'>    # (anyone can register by default, remember?)
+</span><span class='line'>    publish: $authenticated
+</span><span class='line'>
+</span><span class='line'>    # if package is not available locally, proxy requests to 'npmjs' registry
+</span><span class='line'>    proxy: npmjs
+</span><span class='line'>
+</span><span class='line'># log settings
+</span><span class='line'>logs:
+</span><span class='line'>  - {type: stdout, format: pretty, level: http}
+</span><span class='line'>  #- {type: file, path: sinopia.log, level: info}
+</span><span class='line'>
+</span><span class='line'># you can specify listen address (or simply a port) 
+</span><span class='line'>listen: 0.0.0.0:4873  ////默认没有，只能在本机访问，添加后可以通过外网访问。</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>部分配置字段意义</h4>
+
+<p>storage: 仓库保存的路径</p>
+
+<p>web: 是否支持WEB接口</p>
+
+<p>auth: 验证相关</p>
+
+<p>uplinks: 配置上游的npm服务器，主要是用于请求的仓库不存在时去上游服务器拉取</p>
+
+<p>packages: 配置模块/包的发布(publish)、下载(access)的权限等</p>
+
+<p>listen: 配置监听端口与主机名</p>
+
+<h4>auth配置</h4>
+
+<p><code>max_users: -1</code>表示我们将最大用户数设置为－1，表示禁用 npm adduser 命令来创建用户，不过我们仍然可以通过当前目录下的 htpasswd 文件来初始化用户。
+示例：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>yorkie:{SHA}?????????????????=:autocreated 2016-02-05T15:33:46.238Z
+</span><span class='line'>
+</span><span class='line'>weflex:{SHA}????????????????=:autocreated 2016-02-05T15:39:19.960Z
+</span><span class='line'>
+</span><span class='line'>james:{SHA}????????????????=:autocreated 2016-02-05T17:59:05.041Z</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的加密算法也很简单，就是简单的SHA1哈稀之后再转换成 Base64 输出就好，后面跟着的只是表示时间。</p>
+
+<h4>packages配置</h4>
+
+<p>配置大致分为两个部分，一个是以 @weflex/* 为开头的，另一个则是通配符 *。</p>
+
+<p>这个当然就是对 package.json 中的 name 字段进行匹配，比如 @weflex/app 将匹配第一个配置，而 express 则匹配第二个。</p>
+
+<p>这里这么配置的意义在于：一般团队或者公司的私有项目，会采用不同的权限控制，于是这里借用了 NPM 的 scoped name 即 @company 的形式，例如 @weflex/app 即表示 WeFlex 下属的 app 项目了。</p>
+
+<p>接下来，每一个命名过滤器(filter)下都有三项基本设置：</p>
+
+<ul>
+<li><p>access: 表示哪一类用户可以对匹配的项目进行安装(install)</p></li>
+<li><p>publish: 表示哪一类用户可以对匹配的项目进行发布(publish)</p></li>
+<li><p>proxy: 如其名，这里的值是对应于 uplinks 的</p></li>
+</ul>
+
+
+<p>对于1和2的值，我们通常有以下一些可选的配置：</p>
+
+<ul>
+<li><p>$all 表示所有人都可以执行对应的操作</p></li>
+<li><p>$authenticated 表示只有通过验证的人可以执行对应操作</p></li>
+<li><p>$anonymous 表示只有匿名者可以进行对应操作（通常无用）</p></li>
+</ul>
+
+
+<p>或者也可以指定对应于之前我们配置的用户表 htpasswd 中的一个或多个用户，这样就明确地指定哪些用户可以执行匹配的操作
+配置完成后，再运行：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sinopia -c config.yml</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>客户端使用</h3>
+
+<blockquote><p>强烈推荐使用nrm来管理自己的代理。</p></blockquote>
+
+<h4>安装nrm:</h4>
+
+<p>全局安装nrm可以快速修改,切换,增加npm镜像地址。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ npm install -g nrm # 安装nrm
+</span><span class='line'>$ nrm add XXXXX http://XXXXXX:4873 # 添加本地的npm镜像地址
+</span><span class='line'>$ nrm use XXXX # 使用本址的镜像地址</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>nrm的其他命令：</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ nrm --help  # 查看nrm命令帮助
+</span><span class='line'>$ nrm list # 列出可用的 npm 镜像地址
+</span><span class='line'>$ nrm use taobao # 使用`淘宝npm`镜像地址</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装包</h4>
+
+<p>安装完成.之后你通过npm install 安装的包,sinopia都会帮你缓存到本地了.试一下吧。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir test && cd test
+</span><span class='line'>npm install lodash # sinopia发现本地没有 lodash包,就会从 taobao镜像下载
+</span><span class='line'>rm -rf node-modules # 删除目录
+</span><span class='line'>npm insatll lodash # 第二次安装就会从缓存下载了,速度很快</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>创建用户与发布包</h4>
+
+<p>创建新用户</p>
+
+<p>1.确保自己已经切换到配置的代理</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>➜  ~ nrm ls
+</span><span class='line'>
+</span><span class='line'>  npm ---- https://registry.npmjs.org/
+</span><span class='line'>  cnpm --- http://r.cnpmjs.org/
+</span><span class='line'>  taobao - http://registry.npm.taobao.org/
+</span><span class='line'>  nj ----- https://registry.nodejitsu.com/
+</span><span class='line'>  rednpm - http://registry.mirror.cqupt.edu.cn
+</span><span class='line'>  npmMirror  https://skimdb.npmjs.com/registry
+</span><span class='line'>* sinopia  http://192.168.1.200:4873/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2.运行<code>npm adduser</code>,填写信息，注册账号。如果已经有账号，直接运行<code>npm login</code>即可。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>➜  ~ npm adduser
+</span><span class='line'>  Username: test
+</span><span class='line'>  Password:</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.运行<code>$ npm publish</code>发布新包。</p>
+
+<h3>总结</h3>
+
+<ul>
+<li>到此为止吧，剩下的坑自己踩吧，多踩坑才能多成长。</li>
+<li>保存好你的 htpasswd 文件，不要泄漏到任何公有仓库中去。</li>
+<li>以上的情况并没有考虑在遇到一些黑客攻击的情况下，所以为了尽量保证代码的安全，可以在前端加一层 Nginx 然后配置 SSH 公钥来作为双层验证。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Javascript判断数据类型]]></title>
+    <link href="http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/"/>
+    <updated>2016-05-21T21:07:35+08:00</updated>
+    <id>http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing</id>
+    <content type="html"><![CDATA[<h3>题目</h3>
+
+<p>实现一个函数typeof()，输入一个数据，返回数据的基本类型。
+如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typeof([]) =&gt; array
+</span><span class='line'>typeof({}) =&gt; object
+</span><span class='line'>typeof("") =&gt; string
+</span><span class='line'>等等</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h3>解析</h3>
+
+<p>   由于javascript这门语言辉(keng)煌(die)的历史，所以连这种简单的需求都需要自己来实现，唉，说多了，都是泪啊。</p>
+
+<p>   这儿题目相对来说应该是比较简单的，但是也是有不少坑，想要真正实现的很好，还是需要用到不少知识的。</p>
+
+<p>   一开始，肯定有人想到使用<code>typeof</code>，顾名思义嘛，就是判断数据的类型，但是，可是，实际真的是这样吗？</p>
+
+<h4>typeof操作符</h4>
+
+<blockquote><p>typeof 操作符（和 instanceof 一起）或许是 JavaScript 中最大的设计缺陷， 因为几乎不可能从它们那里得到想要的结果。         &ndash;javascript秘密花园</p></blockquote>
+
+<p>尽管 instanceof 还有一些极少数的应用场景，typeof 只有一个实际的应用，就是用来检测一个对象是否已经定义或者是否已经赋值，而这个应用却不是用来检查对象的类型。（好吧，这个其实貌似也并没有什么卵用。。。）</p>
+
+<p>在下面表格中，Type 一列表示 typeof 操作符的运算结果。其中，JavaScript 标准文档中定义: [[Class]] 的值只可能是下面12个字符串中的一个： <code>Arguments</code>, <code>Array</code>, <code>Boolean</code>, <code>Date</code>, <code>Error</code>, <code>Function</code>, <code>JSON</code>, <code>Math</code>, <code>Number</code>, <code>Object</code>, <code>RegExp</code>, <code>String</code>。可以看到，这个值在大多数情况下都返回 &ldquo;object&#8221;。</p>
+
+<table>
+<thead>
+<tr>
+<th> Value     </th>
+<th style="text-align:center;">          Class   </th>
+<th style="text-align:right;">   Type </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> &ldquo;foo&rdquo;             </td>
+<td style="text-align:center;">  String  </td>
+<td style="text-align:right;">   string </td>
+</tr>
+<tr>
+<td> new String(&ldquo;foo&rdquo;) </td>
+<td style="text-align:center;">  String  </td>
+<td style="text-align:right;">   object </td>
+</tr>
+<tr>
+<td> 1.2               </td>
+<td style="text-align:center;">  Number  </td>
+<td style="text-align:right;">   number </td>
+</tr>
+<tr>
+<td> new Number(1.2)   </td>
+<td style="text-align:center;">  Number  </td>
+<td style="text-align:right;">   object </td>
+</tr>
+<tr>
+<td> true              </td>
+<td style="text-align:center;">  Boolean </td>
+<td style="text-align:right;">   boolean </td>
+</tr>
+<tr>
+<td> new Boolean(true) </td>
+<td style="text-align:center;">  Boolean </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Date()        </td>
+<td style="text-align:center;">  Date    </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Error()       </td>
+<td style="text-align:center;">  Error   </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> [1,2,3]           </td>
+<td style="text-align:center;">  Array   </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Array(1, 2, 3)</td>
+<td style="text-align:center;">  Array   </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Function(&ldquo;&rdquo;)  </td>
+<td style="text-align:center;">  Function </td>
+<td style="text-align:right;">   function </td>
+</tr>
+<tr>
+<td> /abc/g            </td>
+<td style="text-align:center;">  RegExp   </td>
+<td style="text-align:right;">  object (function in Nitro/V8) </td>
+</tr>
+<tr>
+<td> new RegExp(&ldquo;meow&rdquo;) </td>
+<td style="text-align:center;"> RegExp   </td>
+<td style="text-align:right;">  object (function in Nitro/V8) </td>
+</tr>
+<tr>
+<td> {}                </td>
+<td style="text-align:center;">  Object   </td>
+<td style="text-align:right;">  object  </td>
+</tr>
+<tr>
+<td> new Object()      </td>
+<td style="text-align:center;">  Object    </td>
+<td style="text-align:right;"> object     </td>
+</tr>
+</tbody>
+</table>
+
+
+<p> #####测试为定义变量</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typeof foo !== 'undefined'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面代码会检测 foo 是否已经定义；如果没有定义而直接使用会导致 <code>ReferenceError</code> 的异常。 这是 typeof <code>唯一有用</code>的地方。</p>
+
+<h4>instanceof 操作符</h4>
+
+<p>刚说完，typeof,肯定又有人想用instanceof，但是，instanceof真的有用吗？</p>
+
+<p>instanceof 操作符用来比较两个操作数的<code>构造函数</code>，instanceof 运算符与 typeof 运算符相似，用于识别正在处理的对象的类型。具体的可以看看这个<a href="https://www.ibm.com/developerworks/cn/web/1306_jiangjj_jsinstanceof/">JavaScript instanceof 运算符深入剖析</a>。
+因此，instanceof在判断一个对象是不是一个类的<code>实例</code>只有在比较自定义的对象时才有意义。 如果用来比较内置类型，将会和 typeof 操作符 一样用处不大。</p>
+
+<h5>比较自定义对象</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function Foo() {}
+</span><span class='line'>function Bar() {}
+</span><span class='line'>Bar.prototype = new Foo();
+</span><span class='line'>
+</span><span class='line'>new Bar() instanceof Bar; // true
+</span><span class='line'>new Bar() instanceof Foo; // true
+</span><span class='line'>
+</span><span class='line'>// 如果仅仅设置 Bar.prototype 为函数 Foo 本身，而不是 Foo 构造函数的一个实例。
+</span><span class='line'>Bar.prototype = Foo;
+</span><span class='line'>new Bar() instanceof Foo; // false</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>instanceof 比较内置类型</h4>
+
+<p>但是，不是通过构造函数创建的对象使用instanceof比较，那得到的，可能就不是你想要的结果。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>new String('foo') instanceof String; // true
+</span><span class='line'>new String('foo') instanceof Object; // true
+</span><span class='line'>
+</span><span class='line'>'foo' instanceof String; // false
+</span><span class='line'>'foo' instanceof Object; // false</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>注意</h5>
+
+<p>还有有一点需要注意，instanceof 用来比较属于不同 JavaScript 上下文的对象（比如，浏览器中不同的文档结构）时将会出错， 因为它们的构造函数不会是同一个对象。</p>
+
+<p>看到这里，是不是很震惊？你所知道的知道的方法，都是错的。。。唉，当初我知道了这个也是泪流满面啊。。。</p>
+
+<h4>解决方法</h4>
+
+<p>javascript对象的内部属性 [[Class]] 的值就包含有j其对象的类型，为了获取对象的 [[Class]]，我们需要使用定义在 Object.prototype 上的方法 toString。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function is(type, obj) {
+</span><span class='line'>    var clas = Object.prototype.toString.call(obj).slice(8, -1);
+</span><span class='line'>    return obj !== undefined && obj !== null && clas === type;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>is('String', 'test'); // true
+</span><span class='line'>is('String', new String('test')); // true
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Object.prototype.toString 返回一种标准格式字符串，所以上例可以通过 slice 截取指定位置的字符串，如下所示：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Object.prototype.toString.call([])    // "[object Array]"
+</span><span class='line'>Object.prototype.toString.call({})    // "[object Object]"
+</span><span class='line'>Object.prototype.toString.call(2)    // "[object Number]"</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>看看大神的解决方案</h4>
+
+<p>如果我没记错，在<code>jQuery</code>和<code>underscore</code>等库中都有判断数据类型的函数，可能平时大家也就用用，没有仔细了解过它们的底层是怎么实现的，</p>
+
+<p><strong>我们要会使用框架，但不要依赖框架</strong></p>
+
+<p>以后大家再碰到类似的问题的时候，不妨查看一下这些成熟框架或库的实现源码，这里，我抛出jQuery的实现源码，抛砖引玉。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var class2type = {} ;
+</span><span class='line'>"Boolean Number String Function Array Date RegExp Object Error".split(" ").forEach(function(e,i){
+</span><span class='line'>    class2type[ "[object " + e + "]" ] = e.toLowerCase();
+</span><span class='line'>}) ;
+</span><span class='line'>//当然为了兼容IE低版本，forEach需要一个polyfill，不作细谈了。
+</span><span class='line'>function _typeof(obj){
+</span><span class='line'>    if ( obj == null ){
+</span><span class='line'>        return String( obj );
+</span><span class='line'>    }
+</span><span class='line'>    return typeof obj === "object" || typeof obj === "function" ?
+</span><span class='line'>    class2type[ Object.prototype.toString.call(obj) ] || "object" :
+</span><span class='line'>        typeof obj;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>结论：</h3>
+
+<p>看源码是程序员快速成长的重要方式。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[修改this指针]]></title>
+    <link href="http://pines-cheng.github.io/blog/2016/05/16/xiu-gai-thiszhi-zhen/"/>
+    <updated>2016-05-16T23:49:23+08:00</updated>
+    <id>http://pines-cheng.github.io/blog/2016/05/16/xiu-gai-thiszhi-zhen</id>
+    <content type="html"><![CDATA[<h3>题目</h3>
+
+<p>  封装函数 f，使 f 的 this 指向指定的对象 。</p>
+
+<h4>输入例子</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bindThis(function(a, b) {
+</span><span class='line'>  return this.test + a + b；
+</span><span class='line'>}, {test: 1})(2, 3)；</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>输出例子</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>6</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h3>分析</h3>
+
+<h4>题目拆解</h4>
+
+<p>  该题目的要求是：封装一个函数bindThis，该函数有两个参数，第一个参数是一个内部有使用this指针的函数f，第二个参数是一个对象obj，执行bindThis之后，返回一个函数，该函数里面的this就被绑定到obj上面。。。好吧，我承认我刚看到这个时，也很晕，但是如果我把它写成下面的样子，是不是就感觉好多了呢？</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function f(a, b) {
+</span><span class='line'>  return this.test + a + b；
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>function bindThis(f, obj) {
+</span><span class='line'>  //你实现的部分
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>//执行函数
+</span><span class='line'>var a = bindThis(f,{test:1});
+</span><span class='line'>a(2,3);</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>什么是this</h4>
+
+<p>  this是Javascript语言的一个关键字。它代表函数<code>运行时</code>，自动生成的一个内部对象，只能在函数内部使用(类似的还有arguments)。具体的大家可以看看<a href="http://www.ruanyifeng.com/blog">阮一峰</a>的<a href="http://www.ruanyifeng.com/blog/2010/04/using_this_keyword_in_javascript.html">Javascript的this用法</a>
+和变量不同，关键字this没有作用域的限制，嵌套的函数不会从调用它的函数中继承this。
+简单的将this的指向分为四种情况：</p>
+
+<ul>
+<li><p>函数调用</p>
+
+<p>  这是函数的最通常用法，属于全局性调用，其this的值不是全局对象Global（非严格模式下）就是undefined（严格模式下）。</p></li>
+<li><p>对象方法调用</p>
+
+<p>  函数还可以作为某个对象的方法调用，这时this就指这个上级对象.</p></li>
+<li><p>构造函数调用</p>
+
+<p>  所谓构造函数，就是通过这个函数生成一个新对象（object）。这时，this就指这个新对象。</p></li>
+<li><p>bind apply call</p>
+
+<p>  apply()是函数对象的一个方法，它的作用是改变函数的调用对象，它的第一个参数就表示改变后的调用这个函数的对象。因此，this指的就是这第一个参数。bind,call类似。</p></li>
+</ul>
+
+
+<p>总结：<strong>this关键字就是，谁调用我，我就指向谁。</strong></p>
+
+<h3>解决方法</h3>
+
+<p>首先，看到<code>this的绑定</code>这几个字，你是不想条件反射的想起了javascript的三剑客:bind apply call?</p>
+
+<h4>bind apply call的区别</h4>
+
+<p>call 和 apply 都是为了改变某个函数运行时的 context 即上下文而存在的，换句话说，就是为了<code>改变函数体内部 this 的指向</code>。因为 JavaScript 的函数存在「定义时上下文」和「运行时上下文」以及「上下文是可以改变的」这样的概念。</p>
+
+<ul>
+<li>相同点：
+  都可以为函数绑定this。</li>
+<li>不同点：
+  call和apply基本的区别：参数不同。apply() 接收两个参数，第一个是绑定 this 的值，第二个是一个参数数组。而 call() 呢，它的第一个参数也是绑定给 this 的值，但是后面接受的是不定参数，而不再是一个数组，也就是说你可以像平时给函数传参那样把这些参数一个一个传递。
+bind的区别：创建一个新的函数。具体的可以看看这篇文章<a href="http://andyyou.logdown.com/posts/233010-understanding-javascript-functionprototypebind">理解 Javascript 的 Function.prototype.bind</a></li>
+</ul>
+
+
+<h4>解决方法一：使用bind()</h4>
+
+<p>下面的例子是其中一个解决方法，同时也说明了bind()方法是创建了一个新的函数。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function f(a, b) {
+</span><span class='line'>  return this.test + a + b;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>function bindThis(f, obj) {
+</span><span class='line'>  //你实现的部分
+</span><span class='line'>  return f.bind(obj);
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>//执行函数
+</span><span class='line'>var a = bindThis(f,{test:1});
+</span><span class='line'>console.log(a(2,3));
+</span><span class='line'>console.log(f(2,3));</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>输出结果</strong>：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>6
+</span><span class='line'>NaN</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>解决方法二：使用apply()</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function bindThis(f, obj) {
+</span><span class='line'>    //你实现的部分
+</span><span class='line'>    return function () {
+</span><span class='line'>        return f.apply(obj, arguments);
+</span><span class='line'>    };
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这里使用一个函数包装了一下apply方法，然后返回该函数。</p>
+
+<p><code>arguments</code>是JavaScript 中每个函数内都能访问一个特别变量 arguments。这个变量维护着所有传递到这个函数中的参数列表。</p>
+
+<p>注意: 由于 arguments 已经被定义为函数内的一个变量。 因此通过 var 关键字定义 arguments 或者将 arguments 声明为一个形式参数， 都将导致原生的 arguments 不会被创建。</p>
+
+<p>arguments 变量不是一个数组（Array）。 尽管在语法上它有数组相关的属性 length，但它不从 Array.prototype 继承，实际上它是一个对象（Object）。</p>
+
+<h4>解决方法三：使用call()</h4>
+
+<p>和apply()类似，仅参数的传入方式不同。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function bindThis(f, obj) {
+</span><span class='line'>    //你实现的部分
+</span><span class='line'>    return function (a,b) {
+</span><span class='line'>        return f.call(obj, a,b);
+</span><span class='line'>    };
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>总结</h3>
+
+<p>该题目主要考察的是this关键字及改变this指向的方法，再下才疏学浅，只能找到这几个方法了，但是鉴于javascript这门语言的灵活性，我老感觉应该是还有其他的方法的，希望各位知道了能够不吝赐教。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Gulp资料大全:入门、插件、脚手架、包清单]]></title>
+    <link href="http://pines-cheng.github.io/blog/2016/04/25/gulpzi-liao-da-quan-ru-men-,-cha-jian-,-jiao-shou-jia-,-bao-qing-dan/"/>
+    <updated>2016-04-25T00:04:08+08:00</updated>
+    <id>http://pines-cheng.github.io/blog/2016/04/25/gulpzi-liao-da-quan-ru-men-,-cha-jian-,-jiao-shou-jia-,-bao-qing-dan</id>
+    <content type="html"><![CDATA[<h1><a href="https://github.com/alferov/awesome-gulp">awesome-gulp</a>中文版</h1>
+
+<blockquote><p>一份<a href="https://github.com/gulpjs/gulp">gulp</a>的资源，插件和使用实例清单， 致力于打造更好的前端工程构建流程。</p></blockquote>
+
+<p>被老外的<a href="https://github.com/sindresorhus/awesome">awesome</a> 清单刺激到，觉得有必要翻译一份，为国产的程序员们做点事情，本清单将保持实时更新同步。
+PS:进都进来了，就顺便看看其他的吧:</p>
+
+<ul>
+<li><a href="https://github.com/Pines-Cheng/awesome-nodejs-cn">awesome-nodejs-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-angularjs-cn">awesome-angularjs-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-react-cn">awesome-react-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-npm-cn">awesome-npm-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-react-native-cn">awesome-react-native-cn</a></li>
+</ul>
+
+
+<!--more-->
+
+
+<blockquote><p>项目的Github地址：<a href="https://github.com/Pines-Cheng/awesome-gulp-cn">awesome-react-cn</a>，持续更新中。。。欢迎<a href="https://github.com/Pines-Cheng/awesome-gulp-cn">start</a>。
+翻译得仓促，如有问题，请提<a href="https://github.com/Pines-Cheng/awesome-gulp-cn/issues">issues</a>
+如果想贡献，请<a href="https://github.com/Pines-Cheng/awesome-gulp-cn/pulls">Pull Requests</a>。</p></blockquote>
+
+<h2>资源</h2>
+
+<h3>通用资源</h3>
+
+<ul>
+<li><a href="http://gulpjs.com/">官网</a></li>
+<li><a href="https://github.com/gulpjs/gulp">Github库</a></li>
+<li><a href="http://gulpjs.com/plugins/">插件注册</a></li>
+<li><a href="https://www.npmjs.com/package/gulp">NPM模块</a></li>
+<li><a href="https://github.com/gulpjs/plugins/blob/master/src/blackList.json">插件黑名单</a></li>
+</ul>
+
+
+<h3>官方文档</h3>
+
+<ul>
+<li><a href="https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md">快速开始</a></li>
+<li><a href="https://github.com/gulpjs/gulp/blob/master/docs/API.md">API文档</a></li>
+<li><a href="https://github.com/gulpjs/gulp/tree/master/docs#articles">CLI 文档</a></li>
+<li><a href="https://github.com/gulpjs/gulp/blob/master/docs/writing-a-plugin/README.md">开始写一个插件</a></li>
+<li><a href="https://github.com/gulpjs/gulp/tree/master/docs/recipes">使用诀窍</a></li>
+</ul>
+
+
+<h3>组织</h3>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/tagged/gulp">StackOverflow</a></li>
+<li><a href="https://twitter.com/gulpjs">Twitter</a></li>
+</ul>
+
+
+<h3>入门教程</h3>
+
+<h4>Gulp入门</h4>
+
+<ul>
+<li><a href="https://www.smashingmagazine.com/2014/06/building-with-gulp/">使用Gulp构建前端工程</a></li>
+<li><a href="https://scotch.io/tutorials/automate-your-tasks-easily-with-gulp-js">通过Gulp.js轻松自动化构建你的前端工程</a></li>
+<li><a href="https://medium.com/@contrahacks/gulp-3828e8126466">Gulp，让前端工程可视化</a></li>
+<li><a href="http://stefanimhoff.de/tag/gulp/">Gulp.js是什么？</a></li>
+<li><a href="http://blog.johnnyreilly.com/2015/02/using-gulp-in-asp-net-instead-of-web-optimization.html">使用Gulp在你的HTML中直接插入Scripts和Styles标签</a></li>
+<li><a href="http://denbuzze.com/post/5-lessons-learned-using-gulpjs/">5节课学会使用Gulp.js</a></li>
+<li><a href="http://lab.brightnorth.co.uk/2014/08/13/automating-linkage-how-i-learned-to-stop-worrying-and-love-the-build/">我是怎样摆脱前端工程的困扰的？</a></li>
+<li><a href="https://www.codementor.io/development-process/tutorial/how-to-set-up-gulp-beginner-guide#/">第一次开始Gulp Task</a></li>
+<li><a href="http://blog.overzealous.com/post/74121048393/why-you-shouldnt-create-a-gulp-plugin-or-how-to">为什么你不自己写一个Gulp插件？</a></li>
+<li><a href="http://blog.rangle.io/angular-gulp-bestpractices/">6个最好的从根本改善你的开发经验的Gulp实战练习</a></li>
+<li><a href="https://css-tricks.com/gulp-for-beginners/">Gulp初学者教程</a></li>
+</ul>
+
+
+<h4>Gulp 4 入门</h4>
+
+<ul>
+<li><a href="https://blog.wearewizards.io/migrating-to-gulp-4-by-example">迁移到Gulp 4的例子</a></li>
+<li><a href="http://fettblog.eu/gulp-4-parallel-and-series/">Gulp 4: 新的task执行系统 - gulp.parallel 和 gulp.series</a></li>
+</ul>
+
+
+<h4>Gulp with Browserify</h4>
+
+<ul>
+<li><a href="https://medium.com/@sogko/gulp-browserify-the-gulp-y-way-bb359b3f9623">Gulp + Browserify, the Gulp-y Way</a></li>
+<li><a href="https://viget.com/extend/gulp-browserify-starter-faq">Gulp + Browserify</a></li>
+<li><a href="https://github.com/gulpjs/gulp/blob/master/docs/recipes/fast-browserify-builds-with-watchify.md">快速构建Browserify和Watchify</a></li>
+</ul>
+
+
+<h4>Gulp with Angular</h4>
+
+<ul>
+<li><a href="http://blog.jhades.org/what-every-angular-project-likely-needs-and-a-gulp-build-to-provide-it/">Angular工程需要什么 - Gulp能提供什么</a></li>
+</ul>
+
+
+<h4>Gulp with Angular and Browserify</h4>
+
+<ul>
+<li><a href="http://omarfouad.com/blog/2015/03/21/advanced-angularjs-structure-with-gulp-node-and-browserify/">使用 Gulp, Node and Browserify构建先进的 AngularJS工程结构</a></li>
+</ul>
+
+
+<h4>Gulp with React and Browserify</h4>
+
+<ul>
+<li><a href="https://hacks.mozilla.org/2014/08/browserify-and-gulp-with-react/">Browserify、Gulp 和 React</a></li>
+<li><a href="http://pomax.github.io/1420592591221/taking-react-to-the-next-level-mixins-gulp-and-browserify">Taking React to the Next Level: Mixins, Gulp, and Browserify</a></li>
+</ul>
+
+
+<h4>Gulp with Ember</h4>
+
+<ul>
+<li><a href="http://www.sitepoint.com/improving-ember-js-workflow-using-gulp-js/">使用Gulp.js改进你的Ember.js工作流</a></li>
+</ul>
+
+
+<h3>其他资源</h3>
+
+<ul>
+<li><a href="https://github.com/osscafe/gulp-cheatsheet">Gulp 备忘录</a></li>
+<li><a href="https://github.com/johnpapa/gulp-patterns">Gulp清单</a></li>
+</ul>
+
+
+<h2>插件</h2>
+
+<h3>编译</h3>
+
+<ul>
+<li><a href="https://github.com/dlmanning/gulp-sass">gulp-sass</a> - 通过 <a href="https://github.com/sass/libsass">libsass</a>将Sass编译成 CSS</li>
+<li><a href="https://github.com/sindresorhus/gulp-ruby-sass">gulp-ruby-sass</a> - 通过 Ruby Sass将Sass编译成CSS</li>
+<li><a href="https://github.com/appleboy/gulp-compass">gulp-compass</a> - 通过 Ruby Sass和CompassSass编译成CSS</li>
+<li><a href="https://github.com/plus3network/gulp-less">gulp-less</a> - <a href="https://github.com/less/less.js">Less</a>编译成 CSS.</li>
+<li><a href="https://github.com/stevelacy/gulp-stylus">gulp-stylus</a> - <a href="https://github.com/stylus/stylus">Stylus</a> 编译成 CSS.</li>
+<li><a href="https://github.com/postcss/gulp-postcss">gulp-postcss</a> - Pipe CSS 通过 <a href="https://github.com/postcss/postcss">PostCSS</a> processors with a single parse.</li>
+<li><a href="https://github.com/contra/gulp-coffee">gulp-coffee</a> - <a href="https://github.com/jashkenas/coffeescript">Coffeescript</a> 编译成 JavaScript.</li>
+<li><a href="https://github.com/ivogabe/gulp-typescript">gulp-typescript</a> - <a href="https://github.com/Microsoft/TypeScript">TypeScript</a>编译成JavaScript.</li>
+<li><a href="https://github.com/sindresorhus/gulp-react">gulp-react</a> - Facebook <a href="https://github.com/facebook/react">React</a> JSX 模板编译成JavaScript.</li>
+<li><p><a href="https://github.com/shama/webpack-stream">webpack-stream</a> - 将<a href="https://github.com/webpack/webpack">webpack</a>集成在Gulp中使用。</p></li>
+<li><p><a href="https://github.com/babel/gulp-babel">gulp-babel</a> - ES6编译成ES5 通过 <a href="https://github.com/babel/babel">babel</a>.</p></li>
+<li><a href="https://github.com/sindresorhus/gulp-traceur">gulp-traceur</a> - ES6编译成ES5 通过 <a href="https://github.com/google/traceur-compiler">Traceur</a>.</li>
+<li><a href="https://github.com/sindresorhus/gulp-regenerator">gulp-regenerator</a> - ES6编译成ES5 通过 <a href="https://github.com/facebook/regenerator">Regenerator</a>.</li>
+<li><a href="https://github.com/sindresorhus/gulp-es6-transpiler">gulp-es6-transpiler</a> - [过时的] ES6编译成ES5 通过 <a href="https://github.com/termi/es6-transpiler">es6-transpiler</a>.</li>
+<li><a href="https://github.com/sindresorhus/gulp-myth">gulp-myth</a> - <a href="https://github.com/segmentio/myth">Myth</a> - a polyfill for future versions of the CSS spec.</li>
+<li><a href="https://github.com/MoOx/gulp-cssnext">gulp-cssnext</a> - [过时的] 使用下一代的 CSS 规范通过 <a href="https://github.com/MoOx/postcss-cssnext">cssnext</a>.</li>
+</ul>
+
+
+<h3>合并</h3>
+
+<ul>
+<li><a href="https://github.com/contra/gulp-concat">gulp-concat</a> - 合并文件.</li>
+</ul>
+
+
+<h3>压缩</h3>
+
+<ul>
+<li><a href="https://github.com/scniro/gulp-clean-css">gulp-clean-css</a> - 压缩 CSS 通过 <a href="https://github.com/jakubpawlowicz/clean-css">clean-css</a>.</li>
+<li><a href="https://github.com/ben-eb/gulp-csso">gulp-csso</a> - 压缩 CSS 通过 <a href="https://github.com/css/csso">CSSO</a>.</li>
+<li><a href="https://github.com/terinjokes/gulp-uglify">gulp-uglify</a> - 压缩 JavaScript 通过 <a href="https://github.com/mishoo/UglifyJS2">UglifyJS2</a>.</li>
+<li><a href="https://github.com/jonschlinkert/gulp-htmlmin">gulp-htmlmin</a> - 压缩 HTML 通过 <a href="https://github.com/kangax/html-minifier">html-minifier</a>.</li>
+<li><a href="https://github.com/murphydanger/gulp-minify-html">gulp-minify-html</a> - 压缩 HTML 通过
+<a href="https://github.com/Swaagie/minimize">Minimize</a>.</li>
+<li><a href="https://github.com/sindresorhus/gulp-imagemin">gulp-imagemin</a> - 压缩 PNG, JPEG, GIF and SVG 图片 通过 <a href="https://github.com/imagemin/imagemin">imagemin</a>.</li>
+<li><a href="https://github.com/ben-eb/gulp-svgmin">gulp-svgmin</a> - 通过Gulp压缩 SVG 文件</li>
+</ul>
+
+
+<h3>优化</h3>
+
+<ul>
+<li><a href="https://github.com/ben-eb/gulp-uncss">gulp-uncss</a> - 移除未使用的CSS选择器通过 <a href="https://github.com/giakki/uncss">UnCSS</a>.</li>
+<li><a href="https://github.com/zckrs/gulp-css-base64">gulp-css-base64</a> - 将CSS文件中所有的资源(有url()声明的)变成base64-encoded 数据的URI字符串</li>
+<li><a href="https://github.com/akoenig/gulp-svg2png">gulp-svg2png</a> - 将SVGs转换成PNGs</li>
+<li><a href="https://github.com/mahnunchik/gulp-responsive">gulp-responsive</a> - 生成不同尺寸的图片</li>
+<li><a href="https://github.com/w0rm/gulp-svgstore">gulp-svgstore</a> -将svg files 合并成一个通过<symbol> 元素</li>
+<li><a href="https://github.com/nfroidure/gulp-iconfont">gulp-iconfont</a> - 通过SVG icons创建 icon fonts</li>
+</ul>
+
+
+<h3>资源注入</h3>
+
+<ul>
+<li><a href="https://github.com/jonkemp/gulp-useref">gulp-useref</a> - 解析HTML文件中特殊标签里面的script或style标签，合并成一个script或css文件，并替换。</li>
+<li><a href="https://github.com/klei/gulp-inject">gulp-inject</a> - 将指定的css或js文件以标签的形式插入到HTML中的指定标志内。</li>
+<li><a href="https://github.com/taptapship/wiredep">wiredep</a> - 将Bower依赖自动注入HTML文件中。</li>
+</ul>
+
+
+<h3>模板</h3>
+
+<ul>
+<li><a href="https://github.com/miickel/gulp-angular-templatecache">gulp-angular-templatecache</a> - 在$templateCache中联系并注册AngularJS模板</li>
+<li><a href="https://github.com/phated/gulp-jade">gulp-jade</a> - <a href="https://github.com/pugjs/jade">Jade</a> 转换成 HTML.</li>
+<li><a href="https://github.com/lazd/gulp-handlebars">gulp-handlebars</a> - <a href="https://github.com/wycats/handlebars.js">Handlebars</a>模板转换成 JavaScript.</li>
+<li><a href="https://github.com/shannonmoeller/gulp-hb">gulp-hb</a> - <a href="https://github.com/wycats/handlebars.js">Handlebars</a> 模板转换成 HTML.</li>
+<li><a href="https://github.com/sindresorhus/gulp-nunjucks">gulp-nunjucks</a> - <a href="https://github.com/mozilla/nunjucks">Nunjucks</a>模板转换成JavaScript.</li>
+<li><a href="https://github.com/sindresorhus/gulp-dust">gulp-dustjs</a> - <a href="https://github.com/linkedin/dustjs">Dust</a>模板转换成JavaScript.</li>
+<li><a href="https://github.com/e-jigsaw/gulp-riot">gulp-riot</a> - <a href="https://github.com/riot/riot">Riot</a>模板转换成JavaScript.</li>
+<li><a href="https://github.com/sindresorhus/gulp-markdown">gulp-markdown</a> - Markdown → HTML.</li>
+<li><a href="https://github.com/sindresorhus/gulp-template">gulp-template</a> - <a href="https://github.com/lodash/lodash">Lodash </a>模板转换成JavaScript.</li>
+<li><a href="https://github.com/colynb/gulp-swig">gulp-swig</a> - <a href="https://github.com/paularmstrong/swig">Swig</a>模板转换成HTML.</li>
+<li><a href="https://github.com/denysdovhan/gulp-remark">gulp-remark</a> - Gulp plugin for [remark]的Gulp插件(<a href="https://github.com/wooorm/remark">https://github.com/wooorm/remark</a>) 通过插件处理markdown</li>
+</ul>
+
+
+<h3>代码校验</h3>
+
+<ul>
+<li><a href="https://www.npmjs.com/package/gulp-csslint">gulp-csslint</a> - 通过<a href="https://github.com/CSSLint/csslint">CSSLint</a>自动校验CSS.</li>
+<li><a href="https://github.com/bezoerb/gulp-htmlhint">gulp-htmlhint</a> - 通过<a href="https://github.com/yaniswang/HTMLHint">HTMLHint</a>校验HTML.</li>
+<li><a href="https://github.com/spalger/gulp-jshint">gulp-jshint</a> - 通过<a href="https://github.com/jshint/jshint">JSHint</a>发现错误和潜在的问题.</li>
+<li><a href="https://github.com/jscs-dev/gulp-jscs">gulp-jscs</a> - 通过<a href="https://github.com/jscs-dev/node-jscs">jscs</a>检查JavaScript代码风格.</li>
+<li><a href="https://github.com/janraasch/gulp-coffeelint">gulp-coffeelint</a> - 一种用来保证<a href="https://github.com/jashkenas/coffeescript">CoffeeScript</a>代码风格统一的检查。</li>
+<li><a href="https://github.com/panuhorsmalahti/gulp-tslint">gulp-tslint</a> - gulp的<a href="https://github.com/Microsoft/TypeScript">TypeScript</a>代码校验插件.</li>
+<li><a href="https://github.com/adametry/gulp-eslint">gulp-eslint</a> - ECMAScript/JavaScript代码校验.</li>
+<li><a href="https://github.com/callumacrae/gulp-w3cjs">gulp-w3cjs</a> - 通过<a href="https://github.com/thomasdavis/w3cjs">w3cjs</a>检验HTML.</li>
+<li><a href="https://github.com/lesshint/gulp-lesshint">gulp-lesshint</a> - 通过<a href="https://github.com/lesshint/lesshint">lesshint</a>校验LESS.</li>
+</ul>
+
+
+<h3>实时加载</h3>
+
+<ul>
+<li><a href="https://github.com/BrowserSync/browser-sync">browser-sync</a> - 保证多个浏览器或设备网页同步显示 (<a href="https://github.com/BrowserSync/gulp-browser-sync">recipes</a>).</li>
+<li><a href="https://github.com/vohof/gulp-livereload">gulp-livereload</a> - Gulp的实时加载插件.</li>
+</ul>
+
+
+<h3>缓存</h3>
+
+<ul>
+<li><a href="https://github.com/sindresorhus/gulp-changed">gulp-changed</a> - 仅让发生改变的文件通过.</li>
+<li><a href="https://github.com/contra/gulp-cached">gulp-cached</a> - 一个简单的文件内存缓存.</li>
+<li><a href="https://github.com/ahaurw01/gulp-remember">gulp-remember</a> - 记忆并回收通过了的文件.</li>
+<li><a href="https://github.com/tschaub/gulp-newer">gulp-newer</a> - 只让新的源码通过.</li>
+</ul>
+
+
+<h3>流控制</h3>
+
+<ul>
+<li><a href="https://github.com/grncdr/merge-stream">merge-stream</a> - 合并多个流到一个插入的流.</li>
+<li><a href="https://github.com/nfroidure/StreamQueue">streamqueue</a> - 逐渐输入队列的流.</li>
+<li><a href="https://github.com/OverZealous/run-sequence">run-sequence</a> - 按要求运行一些依赖的Gulptask.</li>
+<li><a href="https://github.com/robrich/gulp-if">gulp-if</a> - 按照条件运行task.</li>
+</ul>
+
+
+<h3>日志</h3>
+
+<ul>
+<li><a href="https://github.com/mikaelbr/gulp-notify">gulp-notify</a> - Gulp的通知插件.</li>
+<li><a href="https://github.com/sindresorhus/gulp-size">gulp-size</a> - 显示你的项目的大小.</li>
+<li><a href="https://github.com/sindresorhus/gulp-debug">gulp-debug</a> - 通过调试文件流来观察那些文件通过了你的Gulp管道.</li>
+</ul>
+
+
+<h3>测试</h3>
+
+<ul>
+<li><a href="https://github.com/sindresorhus/gulp-mocha">gulp-mocha</a> - 运行<a href="https://github.com/mochajs/mocha">Mocha</a>测试用例.</li>
+<li><a href="https://github.com/sindresorhus/gulp-jasmine">gulp-jasmine</a> - 在Node.js中运行<a href="https://github.com/jasmine/jasmine">Jasmine 2</a> 测试用例.</li>
+<li><a href="https://github.com/mllrsohn/gulp-protractor">gulp-protractor</a> - 为<a href="https://github.com/angular/protractor">Protractor</a>测试用例包裹Gulp.</li>
+<li><a href="https://github.com/dylanb/gulp-coverage">gulp-coverage</a> - 为Node.js覆盖相对于运行的测试运行独立的报告.</li>
+<li><a href="https://github.com/karma-runner/gulp-karma">gulp-karma</a> - 通过Gulp运行Karma测试用例.</li>
+<li><a href="https://github.com/sindresorhus/gulp-ava">gulp-ava</a>- 通过Gulp运行<a href="https://github.com/sindresorhus/ava">AVA</a> 测试用例.</li>
+</ul>
+
+
+<h3>其他插件</h3>
+
+<ul>
+<li><a href="https://github.com/gulpjs/gulp-util">gulp-util</a> - 包含一系列有用插件.</li>
+<li><a href="https://github.com/floatdrop/gulp-plumber">gulp-plumber</a> - 防止错误引起管道中断Prevent pipe breaking caused by errors.</li>
+<li><a href="https://github.com/jackfranklin/gulp-load-plugins">gulp-load-plugins</a> - 自动加载Gulp插件.</li>
+<li><a href="https://github.com/ck86/main-bower-files">main-bower-files</a> - 构建时自动获取bower库的文件.</li>
+<li><a href="https://github.com/postcss/autoprefixer">autoprefixer</a> - 解析CSS且根据规则添加浏览器兼容性前缀.</li>
+<li><a href="https://github.com/floridoo/gulp-sourcemaps">gulp-sourcemaps</a> - 提供source map支持.</li>
+<li><a href="https://github.com/lazd/gulp-replace">gulp-replace</a> - Gulp的一个字符串替换插件.</li>
+<li><a href="https://github.com/hparra/gulp-rename">gulp-rename</a> - 轻松重命名文件.</li>
+<li><a href="https://github.com/sindresorhus/gulp-rev">gulp-rev</a> - 在静态文件名的后面添加hash值，如: unicorn.css → unicorn-d41d8cd98f.css.</li>
+<li><a href="https://github.com/sindresorhus/del">del</a> - 使用globs删除文件/文件夹.</li>
+<li><a href="https://github.com/robrich/gulp-exec">gulp-exec</a> - 运行一个shell命令.</li>
+<li><a href="https://github.com/sindresorhus/gulp-strip-debug">gulp-strip-debug</a> - 除去javascript代码中的console,alert,debugger声明.</li>
+<li><a href="https://github.com/unlight/gulp-cssimport">gulp-cssimport</a> - 解析CSS文件，找到imports,将连接文件替换成imort声明.</li>
+<li><a href="https://github.com/jonkemp/gulp-inline-css">gulp-inline-css</a> - 将HTML中的css属性放到style标签中.</li>
+<li><a href="https://github.com/shinnn/gulp-gh-pages">gulp-gh-pages</a> - 将内容发布到GiHub有页面.</li>
+<li><a href="https://github.com/Kagami/gulp-ng-annotate">gulp-ng-annotate</a> - 通过<a href="https://github.com/olov/ng-annotate">ng-annotate</a>添加Angular依赖注入.</li>
+<li><a href="https://github.com/stevelacy/gulp-bump">gulp-bump</a> - 通过Gulp Bump任何semvar JSON版本.</li>
+<li><a href="https://github.com/coderhaoxin/gulp-file-include">gulp-file-include</a> - 通过Gulp Include文件.</li>
+<li><a href="https://github.com/sindresorhus/gulp-zip">gulp-zip</a> - 以ZIP格式压缩文件.</li>
+<li><a href="https://github.com/stevelacy/gulp-git">gulp-git</a> - 通过Gulp运行git命令.</li>
+<li><a href="https://github.com/sindresorhus/gulp-filter">gulp-filter</a> - 使用globbing过滤文件.</li>
+<li><a href="https://github.com/jas/gulp-preprocess">gulp-preprocess</a> - 基于自定义内容或环境配置预处理文件.</li>
+</ul>
+
+
+<h2>脚手架</h2>
+
+<h3>模板</h3>
+
+<ul>
+<li><a href="https://github.com/google/web-starter-kit">web-starter-kit</a> - Google的Web Starter Kit.</li>
+<li><a href="https://github.com/sindresorhus/gulp-plugin-boilerplate">gulp-plugin-boilerplate</a> - 创建Gulp插件的开始模板.</li>
+<li><a href="https://github.com/polymerelements/polymer-starter-kit">polymer-starter-kit</a> -Polymer 1.0 应用的起点.</li>
+<li><a href="https://github.com/este/este">este</a> - 同构的web应用最全面的React/Flux开发栈和开始模板.</li>
+<li><a href="https://github.com/mrmrs/mnml">mnml</a> - 开发响应式HTML5/Sass项目的最小开始模板.</li>
+<li><a href="https://github.com/cferdinandi/kraken">kraken</a> 一个轻量级的、移动端优先的前端开发开始模板.</li>
+<li><a href="https://github.com/jakemmarsh/angularjs-gulp-browserify-boilerplate">angularjs-gulp-browserify-boilerplate</a> - 一个使用AngularJS, Sass, gulp, 和 Browserify技术的开始模板.</li>
+<li><a href="https://github.com/poeticninja/hapi-ninja">hapi-ninja</a> - 一个使用Node.js, Hapi, and Swig技术的开始模板.</li>
+<li><a href="https://github.com/rappasoft/laravel-5-boilerplate">laravel-5-boilerplate</a> - 一个Laravel 5 开始模板.</li>
+<li><a href="https://github.com/wbkd/react-starterkit">react-starterkit</a> - 包含react-router, Reflux, jest, webpack, gulp and Stylus的React开始模板.</li>
+</ul>
+
+
+<h3>Yeoman生成器</h3>
+
+<ul>
+<li><a href="https://github.com/yeoman/generator-gulp-webapp">generator-gulp-webapp</a> - A 一个流行的web应用的gulp生成器.</li>
+<li><a href="https://github.com/Swiip/generator-gulp-angular">generator-gulp-angular</a> -  使用Gulp的AngularJS 的Yeoman生成器.</li>
+<li><a href="https://github.com/randylien/generator-react-gulp-browserify">generator-react-gulp-browserify</a> - 一个React库的Yeoman生成器，包含gulp, Browserify, Browsersync and Bootstrap.</li>
+<li><a href="https://github.com/youngmountain/generator-node-gulp">generator-node-gulp</a> - 一个Node.js模块生成器，包含gulp和 Mocha.</li>
+<li><a href="https://github.com/niallobrien/generator-gulp-bootstrap">generator-gulp-bootstrap</a> - 一个包含Bootstrap, gulp 和libsass的Yeoman生成器·.</li>
+<li><a href="https://github.com/jgoux/generator-angulpify">generator-angulpify</a> -  一个包含AngularJS, gulp和Browserify的Yeoman生成器.</li>
+<li><a href="https://github.com/tmaximini/generator-ionic-gulp">generator-ionic-gulp</a> - 一个Ionic工厂的Yeoman生成器.</li>
+<li><a href="https://github.com/sindresorhus/generator-gulp-plugin-boilerplate">generator-gulp-plugin-boilerplate</a> -一个输出 <a href="https://github.com/sindresorhus/gulp-plugin-boilerplate">gulp plugin boilerplate</a>的脚手架.</li>
+<li><a href="https://github.com/sondr3/generator-jekyllized">generator-jekyllized</a> - 一个包含gulp, Sass, AutoPrefixer,资源优化，缓存等的Jekyll工作流.</li>
+</ul>
+
+
+<h2>其他</h2>
+
+<ul>
+<li><a href="https://github.com/laravel/elixir">elixir</a> - 一个为你的应用定义基本的gulp任务的干净、灵活的API.</li>
+<li><a href="https://github.com/sindresorhus/gulp-app">gulp-app</a> - 将Gulp作为一个应用(OS X).</li>
+<li><a href="https://github.com/Lostmyname/lmn-gulp-tasks">lmn-gulp-tasks</a> - gulp任务的单元测试示例.</li>
+<li><a href="http://gulp-cookery.github.io/gulp-chef/">gulp-chef</a> - 一个优雅的、简单的重复使用gulp task的方法.</li>
+</ul>
+
+
+<h2>证书</h2>
+
+<p><a href="http://creativecommons.org/publicdomain/zero/1.0/"><img src="http://i.creativecommons.org/p/zero/1.0/88x31.png" alt="CC0" /></a></p>
+]]></content>
+  </entry>
+  
+</feed>

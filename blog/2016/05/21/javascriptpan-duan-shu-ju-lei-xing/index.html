@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Javascript判断数据类型 - Pines Cheng&#8217;s Blog</title>
+  <meta name="author" content="Pines Cheng">
+
+  
+  <meta name="description" content="题目 实现一个函数typeof()，输入一个数据，返回数据的基本类型。
+如： 1
+2
+3
+4
+typeof([]) =&gt; array
+typeof({}) =&gt; object
+typeof("") =&gt; string
+等等 解析 由于javascript这门语言辉(keng)煌( &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/atom.xml" rel="alternate" title="Pines Cheng's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>&#8211;>
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">&#8211;>
+<!--<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">&#8211;>
+<!--<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">&#8211;>
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-57387022-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57387022-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Pines Cheng&#8217;s Blog</a></h1>
+  
+    <h2>不挑食的程序员,充满危机感的斗士.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+<ul class="subscribe">
+  <li><a href="https://github.com/Pines-Cheng" rel="subscribe-github" title="@Pines-Cheng on GitHub"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 50,0 C 22.385714,0 0,22.385714 0,50 0,77.614286 22.385714,100 50,100 77.614286,100 100,77.614286 100,50 100,22.385714 77.614286,0 50,0 z m 29.692858,79.692858 c -3.859184,3.859182 -8.351022,6.887754 -13.35,9.00306 -1.27041,0.536736 -2.560204,1.009184 -3.867348,1.415306 v -7.493878 c 0,-3.938774 -1.35102,-6.835714 -4.053062,-8.690816 1.692858,-0.163264 3.24694,-0.390816 4.663266,-0.683672 1.416326,-0.292858 2.913266,-0.716328 4.491838,-1.27041 1.57857,-0.55408 2.994896,-1.213264 4.247958,-1.97755 1.253062,-0.765306 2.458164,-1.758164 3.613266,-2.978572 1.155102,-1.220408 2.12449,-2.604082 2.905102,-4.15 0.780612,-1.545918 1.4,-3.40204 1.855102,-5.566326 0.455102,-2.164286 0.683674,-4.54898 0.683674,-7.153062 0,-5.045918 -1.643878,-9.341836 -4.931634,-12.890816 C 77.44796,33.35 77.285714,29.10204 75.463266,24.512244 l -1.22143,-0.145918 c -0.845918,-0.09796 -2.368366,0.260204 -4.565306,1.07449 -2.196938,0.814286 -4.663264,2.14796 -7.396938,4.004082 -3.87449,-1.07449 -7.893878,-1.611224 -12.061224,-1.611224 -4.19898,0 -8.203062,0.536734 -12.012246,1.611224 -1.72449,-1.17245 -3.361224,-2.139796 -4.907142,-2.905102 C 31.753062,25.77449 30.516326,25.254082 29.587756,24.97653 28.660204,24.7 27.79796,24.528572 27,24.463266 c -0.79796,-0.0653 -1.310204,-0.08062 -1.537756,-0.04898 -0.22755,0.03164 -0.390816,0.0653 -0.487754,0.09796 -1.82347,4.62245 -1.985714,8.87143 -0.487756,12.743878 -3.287754,3.54796 -4.931632,7.844898 -4.931632,12.890816 0,2.604082 0.227552,4.988776 0.683674,7.153062 0.456122,2.164286 1.07449,4.020408 1.855102,5.566326 0.780612,1.545918 1.75,2.929592 2.905102,4.15 1.155102,1.220408 2.360204,2.213266 3.613264,2.978572 1.253062,0.766326 2.669388,1.42449 4.24796,1.97755 1.578572,0.554082 3.07551,0.976532 4.491836,1.27041 1.416328,0.292856 2.970408,0.521428 4.663266,0.683672 -2.669388,1.82347 -4.004082,4.720408 -4.004082,8.690816 v 7.639796 C 36.536734,89.818368 35.083674,89.3 33.656122,88.695918 c -4.99898,-2.115306 -9.490816,-5.143878 -13.35,-9.00306 -3.859184,-3.859184 -6.887754,-8.351022 -9.00306,-13.35 C 9.1163263,61.171428 8.0071428,55.67347 8.0071428,50 c 0,-5.67347 1.1091835,-11.171428 3.2969392,-16.342858 2.115306,-4.998978 5.143878,-9.490816 9.00306,-13.35 3.859184,-3.859182 8.351022,-6.887754 13.35,-9.00306 C 38.828572,9.1163266 44.32653,8.0071428 50,8.0071428 c 5.67347,0 11.171428,1.1091838 16.342858,3.2969392 5,2.115306 9.490816,5.143878 13.35,9.00306 3.859182,3.859184 6.887754,8.351022 9.00306,13.35 2.186736,5.17245 3.295918,10.67041 3.295918,16.342858 0,5.672448 -1.109182,11.171428 -3.296938,16.342858 -2.115306,4.998978 -5.143878,9.490816 -9.00204,13.35 l 0,0 z"></path></svg></a></li>
+</ul>
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="q" value="site:pines-cheng.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">主页</a></li>
+  <li><a href="/blog/archives">文章</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Javascript判断数据类型</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-21T21:07:35+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>9:07 pm</span></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>题目</h3>
+
+<p>实现一个函数typeof()，输入一个数据，返回数据的基本类型。
+如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typeof([]) =&gt; array
+</span><span class='line'>typeof({}) =&gt; object
+</span><span class='line'>typeof("") =&gt; string
+</span><span class='line'>等等</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h3>解析</h3>
+
+<p>   由于javascript这门语言辉(keng)煌(die)的历史，所以连这种简单的需求都需要自己来实现，唉，说多了，都是泪啊。</p>
+
+<p>   这儿题目相对来说应该是比较简单的，但是也是有不少坑，想要真正实现的很好，还是需要用到不少知识的。</p>
+
+<p>   一开始，肯定有人想到使用<code>typeof</code>，顾名思义嘛，就是判断数据的类型，但是，可是，实际真的是这样吗？</p>
+
+<h4>typeof操作符</h4>
+
+<blockquote><p>typeof 操作符（和 instanceof 一起）或许是 JavaScript 中最大的设计缺陷， 因为几乎不可能从它们那里得到想要的结果。         &ndash;javascript秘密花园</p></blockquote>
+
+<p>尽管 instanceof 还有一些极少数的应用场景，typeof 只有一个实际的应用，就是用来检测一个对象是否已经定义或者是否已经赋值，而这个应用却不是用来检查对象的类型。（好吧，这个其实貌似也并没有什么卵用。。。）</p>
+
+<p>在下面表格中，Type 一列表示 typeof 操作符的运算结果。其中，JavaScript 标准文档中定义: [[Class]] 的值只可能是下面12个字符串中的一个： <code>Arguments</code>, <code>Array</code>, <code>Boolean</code>, <code>Date</code>, <code>Error</code>, <code>Function</code>, <code>JSON</code>, <code>Math</code>, <code>Number</code>, <code>Object</code>, <code>RegExp</code>, <code>String</code>。可以看到，这个值在大多数情况下都返回 &ldquo;object&#8221;。</p>
+
+<table>
+<thead>
+<tr>
+<th> Value     </th>
+<th style="text-align:center;">          Class   </th>
+<th style="text-align:right;">   Type </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> &ldquo;foo&rdquo;             </td>
+<td style="text-align:center;">  String  </td>
+<td style="text-align:right;">   string </td>
+</tr>
+<tr>
+<td> new String(&ldquo;foo&rdquo;) </td>
+<td style="text-align:center;">  String  </td>
+<td style="text-align:right;">   object </td>
+</tr>
+<tr>
+<td> 1.2               </td>
+<td style="text-align:center;">  Number  </td>
+<td style="text-align:right;">   number </td>
+</tr>
+<tr>
+<td> new Number(1.2)   </td>
+<td style="text-align:center;">  Number  </td>
+<td style="text-align:right;">   object </td>
+</tr>
+<tr>
+<td> true              </td>
+<td style="text-align:center;">  Boolean </td>
+<td style="text-align:right;">   boolean </td>
+</tr>
+<tr>
+<td> new Boolean(true) </td>
+<td style="text-align:center;">  Boolean </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Date()        </td>
+<td style="text-align:center;">  Date    </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Error()       </td>
+<td style="text-align:center;">  Error   </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> [1,2,3]           </td>
+<td style="text-align:center;">  Array   </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Array(1, 2, 3)</td>
+<td style="text-align:center;">  Array   </td>
+<td style="text-align:right;">   object  </td>
+</tr>
+<tr>
+<td> new Function(&ldquo;&rdquo;)  </td>
+<td style="text-align:center;">  Function </td>
+<td style="text-align:right;">   function </td>
+</tr>
+<tr>
+<td> /abc/g            </td>
+<td style="text-align:center;">  RegExp   </td>
+<td style="text-align:right;">  object (function in Nitro/V8) </td>
+</tr>
+<tr>
+<td> new RegExp(&ldquo;meow&rdquo;) </td>
+<td style="text-align:center;"> RegExp   </td>
+<td style="text-align:right;">  object (function in Nitro/V8) </td>
+</tr>
+<tr>
+<td> {}                </td>
+<td style="text-align:center;">  Object   </td>
+<td style="text-align:right;">  object  </td>
+</tr>
+<tr>
+<td> new Object()      </td>
+<td style="text-align:center;">  Object    </td>
+<td style="text-align:right;"> object     </td>
+</tr>
+</tbody>
+</table>
+
+
+<p> #####测试为定义变量</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typeof foo !== 'undefined'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面代码会检测 foo 是否已经定义；如果没有定义而直接使用会导致 <code>ReferenceError</code> 的异常。 这是 typeof <code>唯一有用</code>的地方。</p>
+
+<h4>instanceof 操作符</h4>
+
+<p>刚说完，typeof,肯定又有人想用instanceof，但是，instanceof真的有用吗？</p>
+
+<p>instanceof 操作符用来比较两个操作数的<code>构造函数</code>，instanceof 运算符与 typeof 运算符相似，用于识别正在处理的对象的类型。具体的可以看看这个<a href="https://www.ibm.com/developerworks/cn/web/1306_jiangjj_jsinstanceof/">JavaScript instanceof 运算符深入剖析</a>。
+因此，instanceof在判断一个对象是不是一个类的<code>实例</code>只有在比较自定义的对象时才有意义。 如果用来比较内置类型，将会和 typeof 操作符 一样用处不大。</p>
+
+<h5>比较自定义对象</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function Foo() {}
+</span><span class='line'>function Bar() {}
+</span><span class='line'>Bar.prototype = new Foo();
+</span><span class='line'>
+</span><span class='line'>new Bar() instanceof Bar; // true
+</span><span class='line'>new Bar() instanceof Foo; // true
+</span><span class='line'>
+</span><span class='line'>// 如果仅仅设置 Bar.prototype 为函数 Foo 本身，而不是 Foo 构造函数的一个实例。
+</span><span class='line'>Bar.prototype = Foo;
+</span><span class='line'>new Bar() instanceof Foo; // false</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>instanceof 比较内置类型</h4>
+
+<p>但是，不是通过构造函数创建的对象使用instanceof比较，那得到的，可能就不是你想要的结果。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>new String('foo') instanceof String; // true
+</span><span class='line'>new String('foo') instanceof Object; // true
+</span><span class='line'>
+</span><span class='line'>'foo' instanceof String; // false
+</span><span class='line'>'foo' instanceof Object; // false</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>注意</h5>
+
+<p>还有有一点需要注意，instanceof 用来比较属于不同 JavaScript 上下文的对象（比如，浏览器中不同的文档结构）时将会出错， 因为它们的构造函数不会是同一个对象。</p>
+
+<p>看到这里，是不是很震惊？你所知道的知道的方法，都是错的。。。唉，当初我知道了这个也是泪流满面啊。。。</p>
+
+<h4>解决方法</h4>
+
+<p>javascript对象的内部属性 [[Class]] 的值就包含有j其对象的类型，为了获取对象的 [[Class]]，我们需要使用定义在 Object.prototype 上的方法 toString。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>function is(type, obj) {
+</span><span class='line'>    var clas = Object.prototype.toString.call(obj).slice(8, -1);
+</span><span class='line'>    return obj !== undefined && obj !== null && clas === type;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>is('String', 'test'); // true
+</span><span class='line'>is('String', new String('test')); // true
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Object.prototype.toString 返回一种标准格式字符串，所以上例可以通过 slice 截取指定位置的字符串，如下所示：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Object.prototype.toString.call([])    // "[object Array]"
+</span><span class='line'>Object.prototype.toString.call({})    // "[object Object]"
+</span><span class='line'>Object.prototype.toString.call(2)    // "[object Number]"</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>看看大神的解决方案</h4>
+
+<p>如果我没记错，在<code>jQuery</code>和<code>underscore</code>等库中都有判断数据类型的函数，可能平时大家也就用用，没有仔细了解过它们的底层是怎么实现的，</p>
+
+<p><strong>我们要会使用框架，但不要依赖框架</strong></p>
+
+<p>以后大家再碰到类似的问题的时候，不妨查看一下这些成熟框架或库的实现源码，这里，我抛出jQuery的实现源码，抛砖引玉。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var class2type = {} ;
+</span><span class='line'>"Boolean Number String Function Array Date RegExp Object Error".split(" ").forEach(function(e,i){
+</span><span class='line'>    class2type[ "[object " + e + "]" ] = e.toLowerCase();
+</span><span class='line'>}) ;
+</span><span class='line'>//当然为了兼容IE低版本，forEach需要一个polyfill，不作细谈了。
+</span><span class='line'>function _typeof(obj){
+</span><span class='line'>    if ( obj == null ){
+</span><span class='line'>        return String( obj );
+</span><span class='line'>    }
+</span><span class='line'>    return typeof obj === "object" || typeof obj === "function" ?
+</span><span class='line'>    class2type[ Object.prototype.toString.call(obj) ] || "object" :
+</span><span class='line'>        typeof obj;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>结论：</h3>
+
+<p>看源码是程序员快速成长的重要方式。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Pines Cheng
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-05-21T21:07:35+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>9:07 pm</span></time>
+      
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/" data-via="" data-counturl="http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/" >Twitter</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/05/16/xiu-gai-thiszhi-zhen/" title="Previous Post: 修改this指针">&laquo; 修改this指针</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2016/06/24/shi-yong-sinopiada-jian-si-you-de-npmcang-ku/" title="Next Post: 使用Sinopia搭建私有的npm仓库">使用Sinopia搭建私有的npm仓库 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Pines Cheng
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a102f2286701aa4e01ca5c77ea2ae04f";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-59236534-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+</p>
+
+</footer>
+  <!--返回顶部开始-->
+<div id="full" style="width:0px; height:0px; position:fixed; right:80px; bottom:100px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+  <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="返回顶部"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+<!--返回顶部结束-->
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'httppineschenggithubio';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/';
+        var disqus_url = 'http://pines-cheng.github.io/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

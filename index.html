@@ -1,0 +1,752 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Pines Cheng&#8217;s Blog</title>
+  <meta name="author" content="Pines Cheng">
+
+  
+  <meta name="description" content="Pines Cheng的个人博客，全栈工程师.">
+  <meta name="keywords" content="windows c++ octopress Github DirectUI UI GUI GDI GDI+">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pines-cheng.github.io">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/atom.xml" rel="alternate" title="Pines Cheng's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>&#8211;>
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">&#8211;>
+<!--<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">&#8211;>
+<!--<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">&#8211;>
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-57387022-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57387022-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Pines Cheng&#8217;s Blog</a></h1>
+  
+    <h2>不挑食的程序员,充满危机感的斗士.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+<ul class="subscribe">
+  <li><a href="https://github.com/Pines-Cheng" rel="subscribe-github" title="@Pines-Cheng on GitHub"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 50,0 C 22.385714,0 0,22.385714 0,50 0,77.614286 22.385714,100 50,100 77.614286,100 100,77.614286 100,50 100,22.385714 77.614286,0 50,0 z m 29.692858,79.692858 c -3.859184,3.859182 -8.351022,6.887754 -13.35,9.00306 -1.27041,0.536736 -2.560204,1.009184 -3.867348,1.415306 v -7.493878 c 0,-3.938774 -1.35102,-6.835714 -4.053062,-8.690816 1.692858,-0.163264 3.24694,-0.390816 4.663266,-0.683672 1.416326,-0.292858 2.913266,-0.716328 4.491838,-1.27041 1.57857,-0.55408 2.994896,-1.213264 4.247958,-1.97755 1.253062,-0.765306 2.458164,-1.758164 3.613266,-2.978572 1.155102,-1.220408 2.12449,-2.604082 2.905102,-4.15 0.780612,-1.545918 1.4,-3.40204 1.855102,-5.566326 0.455102,-2.164286 0.683674,-4.54898 0.683674,-7.153062 0,-5.045918 -1.643878,-9.341836 -4.931634,-12.890816 C 77.44796,33.35 77.285714,29.10204 75.463266,24.512244 l -1.22143,-0.145918 c -0.845918,-0.09796 -2.368366,0.260204 -4.565306,1.07449 -2.196938,0.814286 -4.663264,2.14796 -7.396938,4.004082 -3.87449,-1.07449 -7.893878,-1.611224 -12.061224,-1.611224 -4.19898,0 -8.203062,0.536734 -12.012246,1.611224 -1.72449,-1.17245 -3.361224,-2.139796 -4.907142,-2.905102 C 31.753062,25.77449 30.516326,25.254082 29.587756,24.97653 28.660204,24.7 27.79796,24.528572 27,24.463266 c -0.79796,-0.0653 -1.310204,-0.08062 -1.537756,-0.04898 -0.22755,0.03164 -0.390816,0.0653 -0.487754,0.09796 -1.82347,4.62245 -1.985714,8.87143 -0.487756,12.743878 -3.287754,3.54796 -4.931632,7.844898 -4.931632,12.890816 0,2.604082 0.227552,4.988776 0.683674,7.153062 0.456122,2.164286 1.07449,4.020408 1.855102,5.566326 0.780612,1.545918 1.75,2.929592 2.905102,4.15 1.155102,1.220408 2.360204,2.213266 3.613264,2.978572 1.253062,0.766326 2.669388,1.42449 4.24796,1.97755 1.578572,0.554082 3.07551,0.976532 4.491836,1.27041 1.416328,0.292856 2.970408,0.521428 4.663266,0.683672 -2.669388,1.82347 -4.004082,4.720408 -4.004082,8.690816 v 7.639796 C 36.536734,89.818368 35.083674,89.3 33.656122,88.695918 c -4.99898,-2.115306 -9.490816,-5.143878 -13.35,-9.00306 -3.859184,-3.859184 -6.887754,-8.351022 -9.00306,-13.35 C 9.1163263,61.171428 8.0071428,55.67347 8.0071428,50 c 0,-5.67347 1.1091835,-11.171428 3.2969392,-16.342858 2.115306,-4.998978 5.143878,-9.490816 9.00306,-13.35 3.859184,-3.859182 8.351022,-6.887754 13.35,-9.00306 C 38.828572,9.1163266 44.32653,8.0071428 50,8.0071428 c 5.67347,0 11.171428,1.1091838 16.342858,3.2969392 5,2.115306 9.490816,5.143878 13.35,9.00306 3.859182,3.859184 6.887754,8.351022 9.00306,13.35 2.186736,5.17245 3.295918,10.67041 3.295918,16.342858 0,5.672448 -1.109182,11.171428 -3.296938,16.342858 -2.115306,4.998978 -5.143878,9.490816 -9.00204,13.35 l 0,0 z"></path></svg></a></li>
+</ul>
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="q" value="site:pines-cheng.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">主页</a></li>
+  <li><a href="/blog/archives">文章</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/06/24/shi-yong-sinopiada-jian-si-you-de-npmcang-ku/">使用Sinopia搭建私有的npm仓库</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-06-24T11:54:58+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:54 am</span></time>
+        
+         | <a href="/blog/2016/06/24/shi-yong-sinopiada-jian-si-you-de-npmcang-ku/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>需求</h3>
+
+<p>公司出于自身隐私保护需要,不想把自己的代码开源到包管理区，但是又急需一套完整包管工具，来管理越来越多的组件、模块和项目。对于前端，最熟悉的莫过于npm，bower等；但是bower的市场兼容性明显没有npm强壮，加之commonjs规范的日益成熟。npm应该是前端包管理的不二选择。</p>
+
+<p>公司对于搭建本地私有npm库有如下要求：</p>
+
+<ol>
+<li>私有包托管在内部服务器中</li>
+<li>项目中使用了公共仓库上的公共包，也使用了内部服务器上的私有包</li>
+<li>希望下载的时候，公共包走公共仓库，私有包走内部服务器的私有仓库</li>
+<li>服务器硬盘有限，希望只缓存下载过的包，而不是全部同步。</li>
+<li>对于下载，发布npm包有对应的权限管理，安装方便，配置简单，依赖少。</li>
+</ol>
+
+
+<h3>关于sinopia？</h3>
+
+<p><a href="https://github.com/rlidwka/sinopia">Sinopia</a> 是一个零配置的私有的带缓存功能的npm包管理工具，作者是是<a href="https://github.com/rlidwka">rlidwka</a>，一个大神，也是一只猫～ 往社区内贡献过很多代码，包括 jshttp, markdown-it 等等，也是 Node.js 核心代码库的活跃贡献者。</p>
+
+<p>使用sinopia，你不用安装CouchDB或MYSQL之类的数据库，Sinopia有自己的迷你数据库，如果要下载的包不存在，它将自动去你配置的npm地址上去下载，而且硬盘中只缓存你现在过的包，以节省空间。</p>
+
+<h4>为什么选择sinopia</h4>
+
+<p>sinopia有以下几个优势值得关注：</p>
+
+<ol>
+<li>不同步拉取npm库，占据大量硬盘，没有硬盘被撑爆的问题；</li>
+<li>安装配置极其简单,不需要数据库；</li>
+<li>支持配置上游registry配置，一次拉取即缓存；</li>
+<li>支持forever及pm2守护进程管理；</li>
+</ol>
+
+
+<h4>其他方法</h4>
+
+<ul>
+<li>使用 git+ssh 这种方式直接引用到 GitHub 项目地址</li>
+</ul>
+
+
+<p>嗯，这种方式可行，也最简单，但真真的太烂了，姑且不说不能使用 semver，关键还是 url 太丑，如果是强迫症真的没法忍～</p>
+
+<ul>
+<li>使用cnpm</li>
+</ul>
+
+
+<p>暂且不论 cnpm 只是作为镜像使用，其实这个方案缺点就挺多的，用的人多，速度不一定快，缓存，关键是不支持发布包以及登陆、注册，再加上配置过于复杂。而且，还需要安装数据库。</p>
+
+<ul>
+<li>npm on-site</li>
+</ul>
+
+
+<p>土豪啊，我还能说什么呢。。。但是问题是，npm在国内访问慢，还是不是的无法访问，花钱也买不到好的服务，何必呢。</p>
+
+<h3>部署</h3>
+
+<h4>安装</h4>
+
+<p>首先，你要自己配置nodejs及npm的环境，然后运行</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g sinopia</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>启动</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sinopia
+</span><span class='line'> warn  --- config file  - .....\AppData\Roaming\sinopia\config.yaml
+</span><span class='line'> warn  --- http address - http://localhost:4873/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后打开：<code>http://localhost:4873/</code>
+<img src="http://xuelipi.com/wp-content/uploads/2016/04/20160329130903.jpg" alt="安装成功画面" />
+如果能正常显示，说明安装成功。</p>
+
+<h4>使用pm2启动</h4>
+
+<p>当然，你也可以使用<a href="https://github.com/Unitech/pm2">pm2</a>或其他的守护进程进行管理，具体步骤如下：</p>
+
+<p>安装pm2:<code>nam install -g pm2</code></p>
+
+<p>启动：pm2 start `which sinopia`</p>
+
+<p>更多高级的pm2使用方法可以查看<a href="https://wohugb.gitbooks.io/pm2/content/">pm2电子书</a>，相当详细，强烈推荐。</p>
+
+<h3>服务端配置</h3>
+
+<p>Sinopia的特点是，你在哪个目录运行，它的就会在对应的目录下创建自己的文件。目录下默认有两个文件：<code>config.yaml</code>和<code>storage</code>，<code>htpasswd</code>是添加用户之后自动创建的。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>root@debian:/usr/local/apps/sinopia# ls
+</span><span class='line'>config.yaml  htpasswd  storage</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中config.yaml是用来配置访问权限，代理，文件存储路径等所有配置信息的，htpasswd用来保存用户的账号密码等息息，storage是用来存放npm包的。</p>
+
+<h4>config.yaml配置文件</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#
+</span><span class='line'># This is the default config file. It allows all users to do anything,
+</span><span class='line'># so don't use it on production systems.
+</span><span class='line'>#
+</span><span class='line'># Look here for more config file examples:
+</span><span class='line'># https://github.com/rlidwka/sinopia/tree/master/conf
+</span><span class='line'>#
+</span><span class='line'>
+</span><span class='line'># path to a directory with all packages
+</span><span class='line'>storage: ./storage  //npm包存放的路径
+</span><span class='line'>
+</span><span class='line'>auth:
+</span><span class='line'>  htpasswd:
+</span><span class='line'>    file: ./htpasswd   //保存用户的账号密码等信息
+</span><span class='line'>    # Maximum amount of users allowed to register, defaults to "+inf".
+</span><span class='line'>    # You can set this to -1 to disable registration.
+</span><span class='line'>    max_users: -1  //默认为1000，改为-1，禁止注册
+</span><span class='line'>
+</span><span class='line'># a list of other known repositories we can talk to
+</span><span class='line'>uplinks:
+</span><span class='line'>  npmjs:
+</span><span class='line'>    url: http://registry.npm.taobao.org/  //默认为npm的官网，由于国情，修改 url 让sinopia使用 淘宝的npm镜像地址
+</span><span class='line'>    
+</span><span class='line'>packages:  //配置权限管理
+</span><span class='line'>  '@*/*':
+</span><span class='line'>    # scoped packages
+</span><span class='line'>    access: $all
+</span><span class='line'>    publish: $authenticated
+</span><span class='line'>
+</span><span class='line'>  '*':
+</span><span class='line'>    # allow all users (including non-authenticated users) to read and
+</span><span class='line'>    # publish all packages
+</span><span class='line'>    #
+</span><span class='line'>    # you can specify usernames/groupnames (depending on your auth plugin)
+</span><span class='line'>    # and three keywords: "$all", "$anonymous", "$authenticated"
+</span><span class='line'>    access: $all
+</span><span class='line'>
+</span><span class='line'>    # allow all known users to publish packages
+</span><span class='line'>    # (anyone can register by default, remember?)
+</span><span class='line'>    publish: $authenticated
+</span><span class='line'>
+</span><span class='line'>    # if package is not available locally, proxy requests to 'npmjs' registry
+</span><span class='line'>    proxy: npmjs
+</span><span class='line'>
+</span><span class='line'># log settings
+</span><span class='line'>logs:
+</span><span class='line'>  - {type: stdout, format: pretty, level: http}
+</span><span class='line'>  #- {type: file, path: sinopia.log, level: info}
+</span><span class='line'>
+</span><span class='line'># you can specify listen address (or simply a port) 
+</span><span class='line'>listen: 0.0.0.0:4873  ////默认没有，只能在本机访问，添加后可以通过外网访问。</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>部分配置字段意义</h4>
+
+<p>storage: 仓库保存的路径</p>
+
+<p>web: 是否支持WEB接口</p>
+
+<p>auth: 验证相关</p>
+
+<p>uplinks: 配置上游的npm服务器，主要是用于请求的仓库不存在时去上游服务器拉取</p>
+
+<p>packages: 配置模块/包的发布(publish)、下载(access)的权限等</p>
+
+<p>listen: 配置监听端口与主机名</p>
+
+<h4>auth配置</h4>
+
+<p><code>max_users: -1</code>表示我们将最大用户数设置为－1，表示禁用 npm adduser 命令来创建用户，不过我们仍然可以通过当前目录下的 htpasswd 文件来初始化用户。
+示例：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>yorkie:{SHA}?????????????????=:autocreated 2016-02-05T15:33:46.238Z
+</span><span class='line'>
+</span><span class='line'>weflex:{SHA}????????????????=:autocreated 2016-02-05T15:39:19.960Z
+</span><span class='line'>
+</span><span class='line'>james:{SHA}????????????????=:autocreated 2016-02-05T17:59:05.041Z</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的加密算法也很简单，就是简单的SHA1哈稀之后再转换成 Base64 输出就好，后面跟着的只是表示时间。</p>
+
+<h4>packages配置</h4>
+
+<p>配置大致分为两个部分，一个是以 @weflex/* 为开头的，另一个则是通配符 *。</p>
+
+<p>这个当然就是对 package.json 中的 name 字段进行匹配，比如 @weflex/app 将匹配第一个配置，而 express 则匹配第二个。</p>
+
+<p>这里这么配置的意义在于：一般团队或者公司的私有项目，会采用不同的权限控制，于是这里借用了 NPM 的 scoped name 即 @company 的形式，例如 @weflex/app 即表示 WeFlex 下属的 app 项目了。</p>
+
+<p>接下来，每一个命名过滤器(filter)下都有三项基本设置：</p>
+
+<ul>
+<li><p>access: 表示哪一类用户可以对匹配的项目进行安装(install)</p></li>
+<li><p>publish: 表示哪一类用户可以对匹配的项目进行发布(publish)</p></li>
+<li><p>proxy: 如其名，这里的值是对应于 uplinks 的</p></li>
+</ul>
+
+
+<p>对于1和2的值，我们通常有以下一些可选的配置：</p>
+
+<ul>
+<li><p>$all 表示所有人都可以执行对应的操作</p></li>
+<li><p>$authenticated 表示只有通过验证的人可以执行对应操作</p></li>
+<li><p>$anonymous 表示只有匿名者可以进行对应操作（通常无用）</p></li>
+</ul>
+
+
+<p>或者也可以指定对应于之前我们配置的用户表 htpasswd 中的一个或多个用户，这样就明确地指定哪些用户可以执行匹配的操作
+配置完成后，再运行：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sinopia -c config.yml</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>客户端使用</h3>
+
+<blockquote><p>强烈推荐使用nrm来管理自己的代理。</p></blockquote>
+
+<h4>安装nrm:</h4>
+
+<p>全局安装nrm可以快速修改,切换,增加npm镜像地址。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ npm install -g nrm # 安装nrm
+</span><span class='line'>$ nrm add XXXXX http://XXXXXX:4873 # 添加本地的npm镜像地址
+</span><span class='line'>$ nrm use XXXX # 使用本址的镜像地址</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>nrm的其他命令：</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ nrm --help  # 查看nrm命令帮助
+</span><span class='line'>$ nrm list # 列出可用的 npm 镜像地址
+</span><span class='line'>$ nrm use taobao # 使用`淘宝npm`镜像地址</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装包</h4>
+
+<p>安装完成.之后你通过npm install 安装的包,sinopia都会帮你缓存到本地了.试一下吧。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir test && cd test
+</span><span class='line'>npm install lodash # sinopia发现本地没有 lodash包,就会从 taobao镜像下载
+</span><span class='line'>rm -rf node-modules # 删除目录
+</span><span class='line'>npm insatll lodash # 第二次安装就会从缓存下载了,速度很快</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>创建用户与发布包</h4>
+
+<p>创建新用户</p>
+
+<p>1.确保自己已经切换到配置的代理</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>➜  ~ nrm ls
+</span><span class='line'>
+</span><span class='line'>  npm ---- https://registry.npmjs.org/
+</span><span class='line'>  cnpm --- http://r.cnpmjs.org/
+</span><span class='line'>  taobao - http://registry.npm.taobao.org/
+</span><span class='line'>  nj ----- https://registry.nodejitsu.com/
+</span><span class='line'>  rednpm - http://registry.mirror.cqupt.edu.cn
+</span><span class='line'>  npmMirror  https://skimdb.npmjs.com/registry
+</span><span class='line'>* sinopia  http://192.168.1.200:4873/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2.运行<code>npm adduser</code>,填写信息，注册账号。如果已经有账号，直接运行<code>npm login</code>即可。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>➜  ~ npm adduser
+</span><span class='line'>  Username: test
+</span><span class='line'>  Password:</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.运行<code>$ npm publish</code>发布新包。</p>
+
+<h3>总结</h3>
+
+<ul>
+<li>到此为止吧，剩下的坑自己踩吧，多踩坑才能多成长。</li>
+<li>保存好你的 htpasswd 文件，不要泄漏到任何公有仓库中去。</li>
+<li>以上的情况并没有考虑在遇到一些黑客攻击的情况下，所以为了尽量保证代码的安全，可以在前端加一层 Nginx 然后配置 SSH 公钥来作为双层验证。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/">Javascript判断数据类型</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-21T21:07:35+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>9:07 pm</span></time>
+        
+         | <a href="/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>题目</h3>
+
+<p>实现一个函数typeof()，输入一个数据，返回数据的基本类型。
+如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typeof([]) =&gt; array
+</span><span class='line'>typeof({}) =&gt; object
+</span><span class='line'>typeof("") =&gt; string
+</span><span class='line'>等等</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/05/21/javascriptpan-duan-shu-ju-lei-xing/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/16/xiu-gai-thiszhi-zhen/">修改this指针</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-16T23:49:23+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:49 pm</span></time>
+        
+         | <a href="/blog/2016/05/16/xiu-gai-thiszhi-zhen/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>题目</h3>
+
+<p>  封装函数 f，使 f 的 this 指向指定的对象 。</p>
+
+<h4>输入例子</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bindThis(function(a, b) {
+</span><span class='line'>  return this.test + a + b；
+</span><span class='line'>}, {test: 1})(2, 3)；</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>输出例子</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>6</span></code></pre></td></tr></table></div></figure>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/05/16/xiu-gai-thiszhi-zhen/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/04/25/gulpzi-liao-da-quan-ru-men-,-cha-jian-,-jiao-shou-jia-,-bao-qing-dan/">Gulp资料大全:入门、插件、脚手架、包清单</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-04-25T00:04:08+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:04 am</span></time>
+        
+         | <a href="/blog/2016/04/25/gulpzi-liao-da-quan-ru-men-,-cha-jian-,-jiao-shou-jia-,-bao-qing-dan/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1><a href="https://github.com/alferov/awesome-gulp">awesome-gulp</a>中文版</h1>
+
+<blockquote><p>一份<a href="https://github.com/gulpjs/gulp">gulp</a>的资源，插件和使用实例清单， 致力于打造更好的前端工程构建流程。</p></blockquote>
+
+<p>被老外的<a href="https://github.com/sindresorhus/awesome">awesome</a> 清单刺激到，觉得有必要翻译一份，为国产的程序员们做点事情，本清单将保持实时更新同步。
+PS:进都进来了，就顺便看看其他的吧:</p>
+
+<ul>
+<li><a href="https://github.com/Pines-Cheng/awesome-nodejs-cn">awesome-nodejs-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-angularjs-cn">awesome-angularjs-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-react-cn">awesome-react-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-npm-cn">awesome-npm-cn</a></li>
+<li><a href="https://github.com/Pines-Cheng/awesome-react-native-cn">awesome-react-native-cn</a></li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/04/25/gulpzi-liao-da-quan-ru-men-,-cha-jian-,-jiao-shou-jia-,-bao-qing-dan/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Tags</h1>
+  <ul class="tag-cloud">
+<li><a style="font-size: 100%" href="/tags/gulp/">gulp</a></li>
+<li><a style="font-size: 100%" href="/tags/javascriptji-chu/">javascript基础</a></li>
+<li><a style="font-size: 100%" href="/tags/qian-duan-gong-cheng/">前端工程</a></li>
+
+  </ul>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Pines Cheng
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a102f2286701aa4e01ca5c77ea2ae04f";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-59236534-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+</p>
+
+</footer>
+  <!--返回顶部开始-->
+<div id="full" style="width:0px; height:0px; position:fixed; right:80px; bottom:100px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+  <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="返回顶部"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+<!--返回顶部结束-->
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'httppineschenggithubio';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
