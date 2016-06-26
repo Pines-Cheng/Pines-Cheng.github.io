@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 前端工程 | Pines Cheng's Blog]]></title>
+  <link href="http://pines-cheng.github.io/blog/categories/qian-duan-gong-cheng/atom.xml" rel="self"/>
+  <link href="http://pines-cheng.github.io/"/>
+  <updated>2016-06-26T17:32:54+08:00</updated>
+  <id>http://pines-cheng.github.io/</id>
+  <author>
+    <name><![CDATA[Pines Cheng]]></name>
+    <email><![CDATA[spider.cs.nuc@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用Sinopia搭建私有的npm仓库]]></title>
+    <link href="http://pines-cheng.github.io/blog/2016/06/24/shi-yong-sinopiada-jian-si-you-de-npmcang-ku/"/>
+    <updated>2016-06-24T11:54:58+08:00</updated>
+    <id>http://pines-cheng.github.io/blog/2016/06/24/shi-yong-sinopiada-jian-si-you-de-npmcang-ku</id>
+    <content type="html"><![CDATA[<h3>需求</h3>
+
+<p>公司出于自身隐私保护需要,不想把自己的代码开源到包管理区，但是又急需一套完整包管工具，来管理越来越多的组件、模块和项目。对于前端，最熟悉的莫过于npm，bower等；但是bower的市场兼容性明显没有npm强壮，加之commonjs规范的日益成熟。npm应该是前端包管理的不二选择。</p>
+
+<p>公司对于搭建本地私有npm库有如下要求：</p>
+
+<ol>
+<li>私有包托管在内部服务器中</li>
+<li>项目中使用了公共仓库上的公共包，也使用了内部服务器上的私有包</li>
+<li>希望下载的时候，公共包走公共仓库，私有包走内部服务器的私有仓库</li>
+<li>服务器硬盘有限，希望只缓存下载过的包，而不是全部同步。</li>
+<li>对于下载，发布npm包有对应的权限管理，安装方便，配置简单，依赖少。</li>
+</ol>
+
+
+<!--more-->
+
+
+<h3>关于sinopia？</h3>
+
+<p><a href="https://github.com/rlidwka/sinopia">Sinopia</a> 是一个零配置的私有的带缓存功能的npm包管理工具，作者是是<a href="https://github.com/rlidwka">rlidwka</a>，一个大神，也是一只猫～ 往社区内贡献过很多代码，包括 jshttp, markdown-it 等等，也是 Node.js 核心代码库的活跃贡献者。</p>
+
+<p>使用sinopia，你不用安装CouchDB或MYSQL之类的数据库，Sinopia有自己的迷你数据库，如果要下载的包不存在，它将自动去你配置的npm地址上去下载，而且硬盘中只缓存你现在过的包，以节省空间。</p>
+
+<h4>为什么选择sinopia</h4>
+
+<p>sinopia有以下几个优势值得关注：</p>
+
+<ol>
+<li>不同步拉取npm库，占据大量硬盘，没有硬盘被撑爆的问题；</li>
+<li>安装配置极其简单,不需要数据库；</li>
+<li>支持配置上游registry配置，一次拉取即缓存；</li>
+<li>支持forever及pm2守护进程管理；</li>
+</ol>
+
+
+<h4>其他方法</h4>
+
+<ul>
+<li>使用 git+ssh 这种方式直接引用到 GitHub 项目地址</li>
+</ul>
+
+
+<p>嗯，这种方式可行，也最简单，但真真的太烂了，姑且不说不能使用 semver，关键还是 url 太丑，如果是强迫症真的没法忍～</p>
+
+<ul>
+<li>使用cnpm</li>
+</ul>
+
+
+<p>暂且不论 cnpm 只是作为镜像使用，其实这个方案缺点就挺多的，用的人多，速度不一定快，缓存，关键是不支持发布包以及登陆、注册，再加上配置过于复杂。而且，还需要安装数据库。</p>
+
+<ul>
+<li>npm on-site</li>
+</ul>
+
+
+<p>土豪啊，我还能说什么呢。。。但是问题是，npm在国内访问慢，还是不是的无法访问，花钱也买不到好的服务，何必呢。</p>
+
+<h3>部署</h3>
+
+<h4>安装</h4>
+
+<p>首先，你要自己配置nodejs及npm的环境，然后运行</p>
+
+<pre><code>npm install -g sinopia
+</code></pre>
+
+<h4>启动</h4>
+
+<pre><code>$ sinopia
+ warn  --- config file  - .....\AppData\Roaming\sinopia\config.yaml
+ warn  --- http address - http://localhost:4873/
+</code></pre>
+
+<p>然后打开：<code>http://localhost:4873/</code>
+<img src="http://xuelipi.com/wp-content/uploads/2016/04/20160329130903.jpg" alt="安装成功画面" />
+如果能正常显示，说明安装成功。</p>
+
+<h4>使用pm2启动</h4>
+
+<p>当然，你也可以使用<a href="https://github.com/Unitech/pm2">pm2</a>或其他的守护进程进行管理，具体步骤如下：</p>
+
+<p>安装pm2:<code>nam install -g pm2</code></p>
+
+<p>启动：pm2 start `which sinopia`</p>
+
+<p>更多高级的pm2使用方法可以查看<a href="https://wohugb.gitbooks.io/pm2/content/">pm2电子书</a>，相当详细，强烈推荐。</p>
+
+<h3>服务端配置</h3>
+
+<p>Sinopia的特点是，你在哪个目录运行，它的就会在对应的目录下创建自己的文件。目录下默认有两个文件：<code>config.yaml</code>和<code>storage</code>，<code>htpasswd</code>是添加用户之后自动创建的。</p>
+
+<pre><code>root@debian:/usr/local/apps/sinopia# ls
+config.yaml  htpasswd  storage
+</code></pre>
+
+<p>其中config.yaml是用来配置访问权限，代理，文件存储路径等所有配置信息的，htpasswd用来保存用户的账号密码等息息，storage是用来存放npm包的。</p>
+
+<h4>config.yaml配置文件</h4>
+
+<pre><code>#
+# This is the default config file. It allows all users to do anything,
+# so don't use it on production systems.
+#
+# Look here for more config file examples:
+# https://github.com/rlidwka/sinopia/tree/master/conf
+#
+
+# path to a directory with all packages
+storage: ./storage  //npm包存放的路径
+
+auth:
+  htpasswd:
+    file: ./htpasswd   //保存用户的账号密码等信息
+    # Maximum amount of users allowed to register, defaults to "+inf".
+    # You can set this to -1 to disable registration.
+    max_users: -1  //默认为1000，改为-1，禁止注册
+
+# a list of other known repositories we can talk to
+uplinks:
+  npmjs:
+    url: http://registry.npm.taobao.org/  //默认为npm的官网，由于国情，修改 url 让sinopia使用 淘宝的npm镜像地址
+
+packages:  //配置权限管理
+  '@*/*':
+    # scoped packages
+    access: $all
+    publish: $authenticated
+
+  '*':
+    # allow all users (including non-authenticated users) to read and
+    # publish all packages
+    #
+    # you can specify usernames/groupnames (depending on your auth plugin)
+    # and three keywords: "$all", "$anonymous", "$authenticated"
+    access: $all
+
+    # allow all known users to publish packages
+    # (anyone can register by default, remember?)
+    publish: $authenticated
+
+    # if package is not available locally, proxy requests to 'npmjs' registry
+    proxy: npmjs
+
+# log settings
+logs:
+  - {type: stdout, format: pretty, level: http}
+  #- {type: file, path: sinopia.log, level: info}
+
+# you can specify listen address (or simply a port) 
+listen: 0.0.0.0:4873  ////默认没有，只能在本机访问，添加后可以通过外网访问。
+</code></pre>
+
+<h4>部分配置字段意义</h4>
+
+<p>storage: 仓库保存的路径</p>
+
+<p>web: 是否支持WEB接口</p>
+
+<p>auth: 验证相关</p>
+
+<p>uplinks: 配置上游的npm服务器，主要是用于请求的仓库不存在时去上游服务器拉取</p>
+
+<p>packages: 配置模块/包的发布(publish)、下载(access)的权限等</p>
+
+<p>listen: 配置监听端口与主机名</p>
+
+<h4>auth配置</h4>
+
+<p><code>max_users: -1</code>表示我们将最大用户数设置为－1，表示禁用 npm adduser 命令来创建用户，不过我们仍然可以通过当前目录下的 htpasswd 文件来初始化用户。
+示例：</p>
+
+<pre><code>
+yorkie:{SHA}?????????????????=:autocreated 2016-02-05T15:33:46.238Z
+
+weflex:{SHA}????????????????=:autocreated 2016-02-05T15:39:19.960Z
+
+james:{SHA}????????????????=:autocreated 2016-02-05T17:59:05.041Z
+</code></pre>
+
+<p>上面的加密算法也很简单，就是简单的SHA1哈稀之后再转换成 Base64 输出就好，后面跟着的只是表示时间。</p>
+
+<h4>packages配置</h4>
+
+<p>配置大致分为两个部分，一个是以 @weflex/* 为开头的，另一个则是通配符 *。</p>
+
+<p>这个当然就是对 package.json 中的 name 字段进行匹配，比如 @weflex/app 将匹配第一个配置，而 express 则匹配第二个。</p>
+
+<p>这里这么配置的意义在于：一般团队或者公司的私有项目，会采用不同的权限控制，于是这里借用了 NPM 的 scoped name 即 @company 的形式，例如 @weflex/app 即表示 WeFlex 下属的 app 项目了。</p>
+
+<p>接下来，每一个命名过滤器(filter)下都有三项基本设置：</p>
+
+<ul>
+<li><p>access: 表示哪一类用户可以对匹配的项目进行安装(install)</p></li>
+<li><p>publish: 表示哪一类用户可以对匹配的项目进行发布(publish)</p></li>
+<li><p>proxy: 如其名，这里的值是对应于 uplinks 的</p></li>
+</ul>
+
+
+<p>对于1和2的值，我们通常有以下一些可选的配置：</p>
+
+<ul>
+<li><p>$all 表示所有人都可以执行对应的操作</p></li>
+<li><p>$authenticated 表示只有通过验证的人可以执行对应操作</p></li>
+<li><p>$anonymous 表示只有匿名者可以进行对应操作（通常无用）</p></li>
+</ul>
+
+
+<p>或者也可以指定对应于之前我们配置的用户表 htpasswd 中的一个或多个用户，这样就明确地指定哪些用户可以执行匹配的操作
+配置完成后，再运行：</p>
+
+<pre><code>$ sinopia -c config.yml
+</code></pre>
+
+<h3>客户端使用</h3>
+
+<blockquote><p>强烈推荐使用nrm来管理自己的代理。</p></blockquote>
+
+<h4>安装nrm:</h4>
+
+<p>全局安装nrm可以快速修改,切换,增加npm镜像地址。</p>
+
+<pre><code>$ npm install -g nrm # 安装nrm
+$ nrm add XXXXX http://XXXXXX:4873 # 添加本地的npm镜像地址
+$ nrm use XXXX # 使用本址的镜像地址
+</code></pre>
+
+<h4>nrm的其他命令：</h4>
+
+<pre><code>$ nrm --help  # 查看nrm命令帮助
+$ nrm list # 列出可用的 npm 镜像地址
+$ nrm use taobao # 使用`淘宝npm`镜像地址
+</code></pre>
+
+<h4>安装包</h4>
+
+<p>安装完成.之后你通过npm install 安装的包,sinopia都会帮你缓存到本地了.试一下吧。</p>
+
+<pre><code>mkdir test &amp;&amp; cd test
+npm install lodash # sinopia发现本地没有 lodash包,就会从 taobao镜像下载
+rm -rf node-modules # 删除目录
+npm insatll lodash # 第二次安装就会从缓存下载了,速度很快
+</code></pre>
+
+<h4>创建用户与发布包</h4>
+
+<p>创建新用户</p>
+
+<p>1.确保自己已经切换到配置的代理</p>
+
+<pre><code>➜  ~ nrm ls
+
+  npm ---- https://registry.npmjs.org/
+  cnpm --- http://r.cnpmjs.org/
+  taobao - http://registry.npm.taobao.org/
+  nj ----- https://registry.nodejitsu.com/
+  rednpm - http://registry.mirror.cqupt.edu.cn
+  npmMirror  https://skimdb.npmjs.com/registry
+* sinopia  http://192.168.1.200:4873/
+</code></pre>
+
+<p>2.运行<code>npm adduser</code>,填写信息，注册账号。如果已经有账号，直接运行<code>npm login</code>即可。</p>
+
+<pre><code>➜  ~ npm adduser
+  Username: test
+  Password:
+</code></pre>
+
+<p>3.运行<code>$ npm publish</code>发布新包。</p>
+
+<h3>总结</h3>
+
+<ul>
+<li>到此为止吧，剩下的坑自己踩吧，多踩坑才能多成长。</li>
+<li>保存好你的 htpasswd 文件，不要泄漏到任何公有仓库中去。</li>
+<li>以上的情况并没有考虑在遇到一些黑客攻击的情况下，所以为了尽量保证代码的安全，可以在前端加一层 Nginx 然后配置 SSH 公钥来作为双层验证。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
