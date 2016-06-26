@@ -3,7 +3,8 @@ layout: post
 title: "使用Sinopia搭建私有的npm仓库"
 date: 2016-06-24 11:54:58 +0800
 comments: true
-categories: 
+tags: [npm]
+categories: 前端工程
 ---
 ###需求
 
@@ -16,6 +17,8 @@ categories:
 3. 希望下载的时候，公共包走公共仓库，私有包走内部服务器的私有仓库
 4. 服务器硬盘有限，希望只缓存下载过的包，而不是全部同步。
 5. 对于下载，发布npm包有对应的权限管理，安装方便，配置简单，依赖少。
+
+<!--more-->
 
 ###关于sinopia？
 
